@@ -1,6 +1,6 @@
 {
   "name": "@adaptive-ds/waha-client",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "TypeScript client and CLI for the WAHA (WhatsApp HTTP API). Full API coverage, Result-typed, Valibot-validated.",
   "keywords": [
     "waha",
