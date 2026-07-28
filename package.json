@@ -1,6 +1,6 @@
 {
   "name": "@adaptive-ds/waha-client",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "TypeScript client and CLI for the WAHA (WhatsApp HTTP API). Full API coverage, Result-typed, Valibot-validated.",
   "keywords": [
     "waha",
@@ -31,7 +31,7 @@
     "dev": "bun run src/cli.ts",
     "test": "bun test",
     "test:w": "bun test --watch",
-    "build": "rm -rf ./dist && bun tsc -p ./tsconfig.lib.json",
+    "build": "rm -rf ./dist && tsc -p ./tsconfig.lib.json",
     "tsc": "tsc --noEmit",
     "release": "bash ./ops/release.sh",
     "update": "bun update",
