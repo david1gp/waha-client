@@ -1,0 +1,76 @@
+{
+  "name": "@adaptive-ds/waha-client",
+  "version": "0.1.0",
+  "description": "TypeScript client and CLI for the WAHA (WhatsApp HTTP API). Full API coverage, Result-typed, Valibot-validated.",
+  "keywords": [
+    "waha",
+    "whatsapp",
+    "api-client",
+    "typescript",
+    "cli",
+    "valibot",
+    "result"
+  ],
+  "homepage": "https://github.com/david1gp/waha-client",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/david1gp/waha-client.git"
+  },
+  "bugs": {
+    "url": "https://github.com/david1gp/waha-client/issues"
+  },
+  "license": "MIT",
+  "type": "module",
+  "private": false,
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "waha-client": "./dist/cli.js"
+  },
+  "scripts": {
+    "dev": "bun run src/cli.ts",
+    "test": "bun test",
+    "test:w": "bun test --watch",
+    "build": "rm -rf ./dist && bun tsc -p ./tsconfig.lib.json",
+    "tsc": "tsc --noEmit",
+    "release": "bash ./ops/release.sh",
+    "update": "bun update",
+    "update:commit": "bun update && git add package.json && bun run tsc && git commit -m \"chore(deps): update dependencies\" && git push",
+    "format": "biome format --write src test package.json tsconfig.json tsconfig.lib.json biome.json",
+    "clean": "rm -rf ./dist",
+    "reset": "rm -rf ./node_modules"
+  },
+  "dependencies": {
+    "@stricli/core": "^1.2.5"
+  },
+  "peerDependencies": {
+    "@adaptive-ds/result": ">=0.4.0",
+    "valibot": "^1.2.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.2",
+    "@types/bun": "^1.3.13",
+    "typescript": "^6.0.3"
+  },
+  "prettier": {
+    "semi": false,
+    "printWidth": 120,
+    "trailingComma": "all"
+  },
+  "imports": {
+    "#result": "@adaptive-ds/result"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./*.js": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.js"
+    }
+  },
+  "files": [
+    "dist"
+  ]
+}
