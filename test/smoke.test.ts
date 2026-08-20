@@ -1,9 +1,11 @@
 import { describe, expect, test } from "bun:test"
-import { PACKAGE_VERSION, wahaClientConfig } from "../src/index.js"
+import pkg from "../package.json" with { type: "json" }
+import { PACKAGE_VERSION, packageVersion, wahaClientConfig } from "../src/index.js"
 
 describe("smoke", () => {
   test("PACKAGE_VERSION is set", () => {
-    expect(PACKAGE_VERSION).toBe("0.1.0")
+    expect(PACKAGE_VERSION).toBe(pkg.version)
+    expect(packageVersion).toBe(pkg.version)
   })
 
   test("wahaClientConfig accepts valid config", () => {

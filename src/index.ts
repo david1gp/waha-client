@@ -1,4 +1,4 @@
-export { PACKAGE_VERSION } from "./packageVersion.js"
+export { PACKAGE_VERSION, packageVersion } from "./packageVersion.js"
 export type { WahaClientConfig, WahaClientConfigInput } from "./wahaClientConfig.js"
 export { wahaClientConfig, wahaClientConfigSchema } from "./wahaClientConfig.js"
 export { wahaClientFromEnv } from "./wahaClientFromEnv.js"

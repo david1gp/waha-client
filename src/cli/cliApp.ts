@@ -1,4 +1,5 @@
 import { buildApplication, buildRouteMap } from "@stricli/core"
+import { PACKAGE_VERSION } from "../packageVersion.js"
 import { authCommands } from "./auth/authCommands.js"
 import { chatCommands } from "./chats/chatCommands.js"
 import { contactCommands } from "./contacts/contactCommands.js"
@@ -28,4 +29,7 @@ const routes = buildRouteMap({
 
 export const wahaClientApp = buildApplication(routes, {
   name: "waha-client",
+  versionInfo: {
+    currentVersion: PACKAGE_VERSION,
+  },
 })
