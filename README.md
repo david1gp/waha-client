@@ -53,6 +53,33 @@ const sent = await messageTextSend({
 if (!sent.success) throw new Error(sent.errorMessage)
 ```
 
+### WebSocket events
+
+`wahaWebSocketObserve` observes one typed WAHA event, then closes the connection. Supply a Valibot `payloadSchema` so
+the event payload is validated at runtime. An optional typed `predicate` runs after validation; returning `false`
+ignores that event and keeps observation open. Predicate exceptions return the stable redacted error
+`WebSocket event predicate failed`. It uses `config.session` by default, accepts an explicit session override, and uses
+`config.timeoutMs` for cleanup. Await `ready` before triggering delivery, then await `event`; call `close()` to cancel.
+
+```ts
+import * as a from "valibot"
+import { wahaWebSocketObserve } from "@adaptive-ds/waha-client"
+
+const observation = wahaWebSocketObserve({
+  config,
+  session: "default",
+  events: ["message"],
+  payloadSchema: a.object({ body: a.string() }),
+  predicate: (event) => event.payload.body === "target code",
+})
+const ready = await observation.ready
+if (!ready.success) throw new Error(ready.errorMessage)
+
+const event = await observation.event
+if (!event.success) throw new Error(event.errorMessage)
+console.log(event.data.payload.body)
+```
+
 ## Environment
 
 - `WAHA_BASE_URL` (required) — WAHA server base URL (e.g. `http://localhost:3000`)

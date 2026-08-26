@@ -136,6 +136,12 @@ export type { ScreenshotGetOptions } from "./screenshotGet.js"
 
 export { wahaResolveSession } from "./wahaResolveSession.js"
 
+// websocket events
+export { wahaWebSocketObserve } from "./wahaWebSocketObserve.js"
+export type { WahaWebSocketEvent } from "./wahaWebSocketEvent.js"
+export type { WahaWebSocketObserveOptions } from "./wahaWebSocketObserveOptions.js"
+export type { WahaWebSocketObserver } from "./wahaWebSocketObserver.js"
+
 // chatting / send
 export { messageTextSend } from "./messageTextSend.js"
 export { messageImageSend } from "./messageImageSend.js"
