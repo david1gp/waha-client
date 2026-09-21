@@ -110,23 +110,33 @@ waha-client sessions list
 waha-client sessions get --session default
 waha-client sessions create --name default --start
 waha-client sessions start|stop|logout|restart|delete|me
+waha-client sessions capping
+waha-client sessions timelock
 
 waha-client auth qr
 waha-client auth request-code --phoneNumber 491701234567
 
 waha-client chats list
 waha-client messages send-text --chatId 123@c.us --text "hello"
+waha-client messages send-sticker --chatId 123@c.us --file ./sticker.webp
+waha-client messages send-sticker --chatId 123@c.us --file https://example.com/sticker.webp --reply_to message-id
 waha-client contacts list
 waha-client contacts check-exists --phone 491701234567
 waha-client groups list
 waha-client groups get --id 120363@g.us
+waha-client events observe
+waha-client events observe --limit 25
 waha-client server ping|health|version|status
 waha-client profile get
 ```
 
 Override env per call with `--baseUrl`, `--apiKey`, `--session`.
 
-Stdout is pretty JSON on success. Errors are Result JSON on stderr with exit code 1.
+Stdout is pretty JSON on success for regular commands. Errors are Result JSON on stderr with exit code 1.
+
+`events observe` prints each validated event envelope as one compact JSON line, observes 10 events by default, and
+accepts a positive integer `--limit N`. It uses the `WAHA_TIMEOUT_MS` timeout (30 seconds by default), with no separate
+CLI timeout flag, and closes successfully after reaching the limit.
 
 ## WAHA
 
