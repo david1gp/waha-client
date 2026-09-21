@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test } from "bun:test"
 import * as a from "valibot"
-import { wahaClientConfig, wahaWebSocketObserve } from "../src/index.js"
+import { wahaClientConfig, wahaWebSocketObserve, wahaWebSocketObserveMany } from "../src/index.js"
 
 type WebSocketEventType = "open" | "message" | "error" | "close"
 type WebSocketEventListener = (() => void) | ((event: { data: unknown }) => void)
@@ -352,5 +352,92 @@ describe("wahaWebSocketObserve", () => {
       errorMessage: "WebSocket closed before a matching event was received",
     })
     expect(socket.closeCalls).toBe(0)
+  })
+
+  test("delivers a burst on one connection and completes at the requested count", async () => {
+    useMockWebSocket()
+    const bodies: string[] = []
+    const observation = wahaWebSocketObserveMany({
+      config: configCreate({ baseUrl: "http://waha.example.test" }),
+      payloadSchema,
+      onEvent: (event) => {
+        bodies.push(event.payload.body)
+        return bodies.length === 3 ? "complete" : "continue"
+      },
+    })
+    const socket = latestSocket()
+    socket.open()
+    expect(await observation.ready).toEqual({ success: true, data: undefined })
+
+    socket.message(eventPayload("one"))
+    socket.message(eventPayload("two"))
+    socket.message(eventPayload("three"))
+    socket.message(eventPayload("ignored-after-completion"))
+
+    expect(await observation.completed).toEqual({ success: true, data: undefined })
+    expect(bodies).toEqual(["one", "two", "three"])
+    expect(MockWebSocket.instances).toHaveLength(1)
+    expect(socket.closeCalls).toBe(1)
+  })
+
+  test("closes continuously after a validation error", async () => {
+    useMockWebSocket()
+    const observation = wahaWebSocketObserveMany({
+      config: configCreate({ baseUrl: "http://waha.example.test" }),
+      payloadSchema,
+      onEvent: () => "continue",
+    })
+    const socket = latestSocket()
+    socket.open()
+    socket.message(JSON.stringify({ event: "message", session: "default", payload: { body: 123 } }))
+
+    expect(await observation.completed).toEqual({
+      success: false,
+      op: "wahaWebSocketObserve",
+      errorMessage: "Invalid WebSocket event payload",
+    })
+    expect(socket.closeCalls).toBe(1)
+  })
+
+  test("cancels a continuous observation idempotently", async () => {
+    useMockWebSocket()
+    const observation = wahaWebSocketObserveMany({
+      config: configCreate({ baseUrl: "http://waha.example.test" }),
+      payloadSchema,
+      onEvent: () => "continue",
+    })
+    const socket = latestSocket()
+
+    observation.close()
+    observation.close()
+
+    expect(await observation.ready).toEqual({
+      success: false,
+      op: "wahaWebSocketObserve",
+      errorMessage: "WebSocket observation cancelled",
+    })
+    expect(await observation.completed).toEqual({
+      success: false,
+      op: "wahaWebSocketObserve",
+      errorMessage: "WebSocket observation cancelled",
+    })
+    expect(socket.closeCalls).toBe(1)
+  })
+
+  test("times out a continuous observation and closes the socket", async () => {
+    useMockWebSocket()
+    const observation = wahaWebSocketObserveMany({
+      config: configCreate({ baseUrl: "http://waha.example.test", timeoutMs: 1 }),
+      payloadSchema,
+      onEvent: () => "continue",
+    })
+    const socket = latestSocket()
+
+    expect(await observation.completed).toEqual({
+      success: false,
+      op: "wahaWebSocketObserve",
+      errorMessage: "WebSocket observation timed out",
+    })
+    expect(socket.closeCalls).toBe(1)
   })
 })

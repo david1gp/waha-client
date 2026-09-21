@@ -138,9 +138,12 @@ export { wahaResolveSession } from "./wahaResolveSession.js"
 
 // websocket events
 export { wahaWebSocketObserve } from "./wahaWebSocketObserve.js"
+export { wahaWebSocketObserveMany } from "./wahaWebSocketObserveMany.js"
 export type { WahaWebSocketEvent } from "./wahaWebSocketEvent.js"
 export type { WahaWebSocketObserveOptions } from "./wahaWebSocketObserveOptions.js"
+export type { WahaWebSocketObserveManyOptions } from "./wahaWebSocketObserveManyOptions.js"
 export type { WahaWebSocketObserver } from "./wahaWebSocketObserver.js"
+export type { WahaWebSocketObserveManyObserver } from "./wahaWebSocketObserveManyObserver.js"
 
 // chatting / send
 export { messageTextSend } from "./messageTextSend.js"

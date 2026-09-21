@@ -3,6 +3,7 @@ import { PACKAGE_VERSION } from "../packageVersion.js"
 import { authCommands } from "./auth/authCommands.js"
 import { chatCommands } from "./chats/chatCommands.js"
 import { contactCommands } from "./contacts/contactCommands.js"
+import { eventsCommands } from "./events/eventsCommands.js"
 import { groupCommands } from "./groups/groupCommands.js"
 import { messageCommands } from "./messages/messageCommands.js"
 import { profileCommands } from "./profile/profileCommands.js"
@@ -18,6 +19,7 @@ const routes = buildRouteMap({
     chats: chatCommands,
     messages: messageCommands,
     contacts: contactCommands,
+    events: eventsCommands,
     groups: groupCommands,
     server: serverCommands,
     profile: profileCommands,
