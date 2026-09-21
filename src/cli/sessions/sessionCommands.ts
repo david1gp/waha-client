@@ -1,4 +1,5 @@
 import { buildCommand, buildRouteMap, type CommandContext } from "@stricli/core"
+import { sessionCappingGet } from "../../sessionCappingGet.js"
 import { sessionCreate } from "../../sessionCreate.js"
 import { sessionDelete } from "../../sessionDelete.js"
 import { sessionGet } from "../../sessionGet.js"
@@ -8,6 +9,7 @@ import { sessionMe } from "../../sessionMe.js"
 import { sessionRestart } from "../../sessionRestart.js"
 import { sessionStart } from "../../sessionStart.js"
 import { sessionStop } from "../../sessionStop.js"
+import { sessionTimelockGet } from "../../sessionTimelockGet.js"
 import { type CliConfigFlags, cliConfigFlagParams } from "../cliConfig.js"
 import { cliRunApi } from "../cliRun.js"
 
@@ -115,6 +117,22 @@ const meCommand = buildCommand({
   docs: { brief: "Get authenticated account (me) for a session" },
 })
 
+const cappingCommand = buildCommand({
+  async func(this: CommandContext, flags: SessionNameFlags) {
+    await cliRunApi(this, flags, (config) => sessionCappingGet({ config, session: flags.session }))
+  },
+  parameters: { flags: { ...cliConfigFlagParams } },
+  docs: { brief: "Get session capping status" },
+})
+
+const timelockCommand = buildCommand({
+  async func(this: CommandContext, flags: SessionNameFlags) {
+    await cliRunApi(this, flags, (config) => sessionTimelockGet({ config, session: flags.session }))
+  },
+  parameters: { flags: { ...cliConfigFlagParams } },
+  docs: { brief: "Get session timelock status" },
+})
+
 export const sessionCommands = buildRouteMap({
   routes: {
     list: listCommand,
@@ -126,6 +144,8 @@ export const sessionCommands = buildRouteMap({
     restart: restartCommand,
     delete: deleteCommand,
     me: meCommand,
+    capping: cappingCommand,
+    timelock: timelockCommand,
   },
   docs: { brief: "Manage WAHA sessions" },
 })

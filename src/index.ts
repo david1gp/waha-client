@@ -14,6 +14,8 @@ export {
 export { sessionList } from "./sessionList.js"
 export { sessionCreate } from "./sessionCreate.js"
 export { sessionGet } from "./sessionGet.js"
+export { sessionCappingGet } from "./sessionCappingGet.js"
+export { sessionTimelockGet } from "./sessionTimelockGet.js"
 export { sessionUpdate } from "./sessionUpdate.js"
 export { sessionDelete } from "./sessionDelete.js"
 export { sessionMe } from "./sessionMe.js"
@@ -35,6 +37,8 @@ export type {
   SessionsStopOptions,
   SessionsLogoutOptions,
 } from "./sessionSchemas.js"
+export type { SessionCappingGetOptions } from "./sessionCappingGet.js"
+export type { SessionTimelockGetOptions } from "./sessionTimelockGet.js"
 export { sessionResolveName } from "./sessionSchemas.js"
 
 export type {
@@ -60,6 +64,8 @@ export type {
   SessionStopDeprecatedRequest,
   SessionLogoutDeprecatedRequest,
 } from "./sessionTypes.js"
+export type { MessageCappingData } from "./messageCappingData.js"
+export type { ReachoutTimelockData } from "./reachoutTimelockData.js"
 
 // auth
 export { authQrGet } from "./authQrGet.js"
@@ -148,6 +154,7 @@ export type { WahaWebSocketObserveManyObserver } from "./wahaWebSocketObserveMan
 // chatting / send
 export { messageTextSend } from "./messageTextSend.js"
 export { messageImageSend } from "./messageImageSend.js"
+export { messageStickerSend } from "./messageStickerSend.js"
 export { messageFileSend } from "./messageFileSend.js"
 export { messageVoiceSend } from "./messageVoiceSend.js"
 export { messageVideoSend } from "./messageVideoSend.js"
@@ -189,6 +196,7 @@ export type {
 
 export type { MessageTextSendOptions } from "./messageTextSend.js"
 export type { MessageImageSendOptions } from "./messageImageSend.js"
+export type { MessageStickerSendOptions } from "./messageStickerSend.js"
 export type { MessageFileSendOptions } from "./messageFileSend.js"
 export type { MessageVoiceSendOptions } from "./messageVoiceSend.js"
 export type { MessageVideoSendOptions } from "./messageVideoSend.js"
