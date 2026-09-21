@@ -1,5 +1,6 @@
 import * as a from "valibot"
-import { createResultError, type PromiseResult } from "#result"
+import { createResult, createResultError, type PromiseResult } from "#result"
+import { groupInfoResponseNormalize } from "./groupInfoResponseNormalize.js"
 import type { GroupInfo, GroupsListFields, GroupsPagination } from "./groupTypes.js"
 import type { WahaClientConfig } from "./wahaClientConfig.js"
 import { wahaPathSession } from "./wahaPath.js"
@@ -31,7 +32,7 @@ export async function groupList(options: GroupListOptions): PromiseResult<GroupI
   const sessionR = wahaResolveSession(op, config, session)
   if (!sessionR.success) return sessionR
 
-  return wahaRequest<GroupInfo[]>({
+  const responseR = await wahaRequest<unknown>({
     config,
     method: "GET",
     path: wahaPathSession(sessionR.data, "/groups"),
@@ -43,4 +44,15 @@ export async function groupList(options: GroupListOptions): PromiseResult<GroupI
       exclude: exclude?.[0],
     },
   })
+  if (!responseR.success) return responseR
+  if (!Array.isArray(responseR.data))
+    return createResultError(op, "Group response must be an array", JSON.stringify(responseR.data))
+
+  const groups: GroupInfo[] = []
+  for (const raw of responseR.data) {
+    const groupR = groupInfoResponseNormalize(raw, op)
+    if (!groupR.success) return groupR
+    groups.push(groupR.data)
+  }
+  return createResult(groups)
 }

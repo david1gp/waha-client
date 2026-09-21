@@ -7,14 +7,14 @@ export type GroupParticipant = {
 }
 
 export type GroupInfo = {
-  id: string
-  subject: string
-  description: string
-  participants: GroupParticipant[]
+  jid: string
+  name: string
+  description?: string
+  participants?: GroupParticipant[]
   invite?: string
-  membersCanAddNewMember: boolean
-  membersCanSendMessages: boolean
-  newMembersApprovalRequired: boolean
+  membersCanAddNewMember?: boolean
+  membersCanSendMessages?: boolean
+  newMembersApprovalRequired?: boolean
 }
 
 export type GroupParticipantRef = {

@@ -1,5 +1,6 @@
 import * as a from "valibot"
 import { createResultError, type PromiseResult } from "#result"
+import { groupInfoResponseNormalize } from "./groupInfoResponseNormalize.js"
 import type { GroupCreateRequest, GroupInfo } from "./groupTypes.js"
 import type { WahaClientConfig } from "./wahaClientConfig.js"
 import { wahaPathSession } from "./wahaPath.js"
@@ -31,10 +32,12 @@ export async function groupCreate(options: GroupCreateOptions): PromiseResult<Gr
   const sessionR = wahaResolveSession(op, config, session)
   if (!sessionR.success) return sessionR
 
-  return wahaRequest<GroupInfo>({
+  const responseR = await wahaRequest<unknown>({
     config,
     method: "POST",
     path: wahaPathSession(sessionR.data, "/groups"),
     body: { name, participants },
   })
+  if (!responseR.success) return responseR
+  return groupInfoResponseNormalize(responseR.data, op)
 }

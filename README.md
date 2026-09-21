@@ -53,6 +53,11 @@ const sent = await messageTextSend({
 if (!sent.success) throw new Error(sent.errorMessage)
 ```
 
+### Group responses
+
+HTTP group info methods (`groupList`, `groupGet`, `groupCreate`, and `groupJoinInfoGet`) return `GroupInfo` with `jid` and
+`name`. The former `id` and `subject` response fields are not returned.
+
 ### WebSocket events
 
 `wahaWebSocketObserve` observes one typed WAHA event, then closes the connection. Supply a Valibot `payloadSchema` so

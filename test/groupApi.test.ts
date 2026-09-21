@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, mock, test } from "bun:test"
-import * as publicApi from "../src/index.js"
 import { groupCreate } from "../src/groupCreate.js"
+import { groupGet } from "../src/groupGet.js"
+import { groupJoinInfoGet } from "../src/groupJoinInfoGet.js"
 import { groupList } from "../src/groupList.js"
 import { groupMemberAddModeGet } from "../src/groupMemberAddModeGet.js"
 import { groupMemberAddModeSet } from "../src/groupMemberAddModeSet.js"
@@ -9,6 +10,8 @@ import { groupMembershipApprovalSet } from "../src/groupMembershipApprovalSet.js
 import { groupParticipantJoinRequestApprove } from "../src/groupParticipantJoinRequestApprove.js"
 import { groupParticipantJoinRequestList } from "../src/groupParticipantJoinRequestList.js"
 import { groupParticipantJoinRequestReject } from "../src/groupParticipantJoinRequestReject.js"
+import type { GroupInfo } from "../src/groupTypes.js"
+import * as publicApi from "../src/index.js"
 import { wahaClientConfig } from "../src/wahaClientConfig.js"
 
 describe("groupApi", () => {
@@ -42,7 +45,7 @@ describe("groupApi", () => {
     })
     expect(r.success).toBe(true)
     if (r.success) {
-      expect(r.data).toEqual([{ id: "1@g.us", subject: "G" }] as typeof r.data)
+      expect(r.data).toEqual([{ jid: "1@g.us", name: "G" }])
     }
 
     const calls = (globalThis.fetch as unknown as ReturnType<typeof mock>).mock.calls
@@ -55,7 +58,7 @@ describe("groupApi", () => {
 
   test("groupCreate POST body", async () => {
     globalThis.fetch = mock(async () => {
-      return new Response(JSON.stringify({ id: "9@g.us", subject: "Team", participants: [] }), { status: 200 })
+      return new Response(JSON.stringify({ jid: "9@g.us", name: "Team", participants: [] }), { status: 200 })
     }) as unknown as typeof fetch
 
     const configR = wahaClientConfig({
@@ -71,7 +74,7 @@ describe("groupApi", () => {
     })
     expect(r.success).toBe(true)
     if (r.success) {
-      expect(r.data).toEqual({ id: "9@g.us", subject: "Team", participants: [] } as unknown as typeof r.data)
+      expect(r.data).toEqual({ jid: "9@g.us", name: "Team", participants: [] })
     }
 
     const calls = (globalThis.fetch as unknown as ReturnType<typeof mock>).mock.calls
@@ -82,6 +85,111 @@ describe("groupApi", () => {
       name: "Team",
       participants: [{ id: "1@c.us" }],
     })
+  })
+
+  test("group responses normalize GOWS fields for all four group info methods", async () => {
+    const gowsGroup = {
+      JID: "123@g.us",
+      OwnerJID: "456@s.whatsapp.net",
+      Name: "GOWS group",
+      Topic: "Group description",
+      IsLocked: false,
+      IsAnnounce: true,
+      Participants: [
+        {
+          JID: "111@s.whatsapp.net",
+          PhoneNumber: "111@s.whatsapp.net",
+          IsAdmin: false,
+          IsSuperAdmin: false,
+        },
+        {
+          JID: "222:3@s.whatsapp.net",
+          PhoneNumber: "222:3@s.whatsapp.net",
+          IsAdmin: true,
+          IsSuperAdmin: false,
+        },
+        {
+          JID: "333@lid",
+          PhoneNumber: "333@lid",
+          IsAdmin: true,
+          IsSuperAdmin: true,
+        },
+      ],
+      MemberAddMode: "all_member_add",
+      IsJoinApprovalRequired: true,
+    }
+    const expected: GroupInfo = {
+      jid: "123@g.us",
+      name: "GOWS group",
+      description: "Group description",
+      participants: [
+        { id: "111@c.us", pn: "111@c.us", role: "participant" },
+        { id: "222@c.us", pn: "222@c.us", role: "admin" },
+        { id: "333@lid", pn: "333@lid", role: "superadmin" },
+      ],
+      membersCanAddNewMember: true,
+      membersCanSendMessages: true,
+      newMembersApprovalRequired: true,
+    }
+
+    const configR = wahaClientConfig({ baseUrl: "http://localhost:3000", session: "default" })
+    if (!configR.success) return
+    const responses = [
+      { call: () => groupList({ config: configR.data }), url: "http://localhost:3000/api/default/groups" },
+      {
+        call: () => groupGet({ config: configR.data, id: "123@g.us" }),
+        url: "http://localhost:3000/api/default/groups/123%40g.us",
+      },
+      {
+        call: () => groupCreate({ config: configR.data, name: "GOWS group", participants: [] }),
+        url: "http://localhost:3000/api/default/groups",
+      },
+      {
+        call: () => groupJoinInfoGet({ config: configR.data, code: "invite" }),
+        url: "http://localhost:3000/api/default/groups/join-info?code=invite",
+      },
+    ]
+
+    for (const [index, response] of responses.entries()) {
+      globalThis.fetch = mock(
+        async () => new Response(JSON.stringify(index === 0 ? [gowsGroup] : gowsGroup), { status: 200 }),
+      ) as unknown as typeof fetch
+      const r = await response.call()
+      expect(r.success).toBe(true)
+      if (r.success) expect(Array.isArray(r.data) ? r.data[0] : r.data).toEqual(expected)
+      const calls = (globalThis.fetch as unknown as ReturnType<typeof mock>).mock.calls
+      expect((calls[0] as [string, RequestInit])[0]).toBe(response.url)
+    }
+  })
+
+  test("group response normalization preserves canonical empty identity fields and accepts legacy fields", async () => {
+    globalThis.fetch = mock(
+      async () =>
+        new Response(JSON.stringify({ jid: "", id: "fallback@g.us", name: "", subject: "Fallback" }), { status: 200 }),
+    ) as unknown as typeof fetch
+
+    const configR = wahaClientConfig({ baseUrl: "http://localhost:3000", session: "default" })
+    if (!configR.success) return
+    const r = await groupGet({ config: configR.data, id: "123@g.us" })
+    expect(r).toEqual({ success: true, data: { jid: "", name: "" } })
+  })
+
+  test("group response normalization rejects invalid identity fields and list items", async () => {
+    globalThis.fetch = mock(
+      async () => new Response(JSON.stringify({ JID: 123, Name: "Invalid" }), { status: 200 }),
+    ) as unknown as typeof fetch
+
+    const configR = wahaClientConfig({ baseUrl: "http://localhost:3000", session: "default" })
+    if (!configR.success) return
+    const invalidSingleR = await groupGet({ config: configR.data, id: "123@g.us" })
+    expect(invalidSingleR.success).toBe(false)
+
+    globalThis.fetch = mock(
+      async () =>
+        new Response(JSON.stringify([{ JID: "123@g.us", Name: "Valid" }, { JID: "456@g.us" }]), { status: 200 }),
+    ) as unknown as typeof fetch
+    const invalidListR = await groupList({ config: configR.data })
+    expect(invalidListR.success).toBe(false)
   })
 
   test("groupList errors when session missing", async () => {
