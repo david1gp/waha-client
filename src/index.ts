@@ -277,12 +277,19 @@ export { groupInfoAdminOnlyGet } from "./groupInfoAdminOnlyGet.js"
 export { groupInfoAdminOnlySet } from "./groupInfoAdminOnlySet.js"
 export { groupMessagesAdminOnlyGet } from "./groupMessagesAdminOnlyGet.js"
 export { groupMessagesAdminOnlySet } from "./groupMessagesAdminOnlySet.js"
+export { groupMemberAddModeGet } from "./groupMemberAddModeGet.js"
+export { groupMemberAddModeSet } from "./groupMemberAddModeSet.js"
+export { groupMembershipApprovalGet } from "./groupMembershipApprovalGet.js"
+export { groupMembershipApprovalSet } from "./groupMembershipApprovalSet.js"
 export { groupInviteCodeGet } from "./groupInviteCodeGet.js"
 export { groupInviteCodeRevoke } from "./groupInviteCodeRevoke.js"
 export { groupParticipantList } from "./groupParticipantList.js"
 export { groupParticipantListV2 } from "./groupParticipantListV2.js"
 export { groupParticipantAdd } from "./groupParticipantAdd.js"
 export { groupParticipantRemove } from "./groupParticipantRemove.js"
+export { groupParticipantJoinRequestList } from "./groupParticipantJoinRequestList.js"
+export { groupParticipantJoinRequestApprove } from "./groupParticipantJoinRequestApprove.js"
+export { groupParticipantJoinRequestReject } from "./groupParticipantJoinRequestReject.js"
 export { groupAdminPromote } from "./groupAdminPromote.js"
 export { groupAdminDemote } from "./groupAdminDemote.js"
 export type {
@@ -292,6 +299,8 @@ export type {
   GroupParticipantRef,
   GroupCreateRequest,
   GroupJoinRequest,
+  GroupJoinRequestResponse,
+  GroupJoinRequestResult,
   GroupJoinResponse,
   GroupField,
   GroupSortField,
@@ -300,6 +309,8 @@ export type {
   GroupsListFields,
   GroupRefreshResponse,
   SettingsSecurityChangeInfo,
+  SettingsMemberAddMode,
+  SettingsMembershipApproval,
   ParticipantsRequest,
 } from "./groupTypes.js"
 export type { GroupCreateOptions } from "./groupCreate.js"
@@ -320,12 +331,19 @@ export type { GroupInfoAdminOnlyGetOptions } from "./groupInfoAdminOnlyGet.js"
 export type { GroupInfoAdminOnlySetOptions } from "./groupInfoAdminOnlySet.js"
 export type { GroupMessagesAdminOnlyGetOptions } from "./groupMessagesAdminOnlyGet.js"
 export type { GroupMessagesAdminOnlySetOptions } from "./groupMessagesAdminOnlySet.js"
+export type { GroupMemberAddModeGetOptions } from "./groupMemberAddModeGet.js"
+export type { GroupMemberAddModeSetOptions } from "./groupMemberAddModeSet.js"
+export type { GroupMembershipApprovalGetOptions } from "./groupMembershipApprovalGet.js"
+export type { GroupMembershipApprovalSetOptions } from "./groupMembershipApprovalSet.js"
 export type { GroupInviteCodeGetOptions } from "./groupInviteCodeGet.js"
 export type { GroupInviteCodeRevokeOptions } from "./groupInviteCodeRevoke.js"
 export type { GroupParticipantListOptions } from "./groupParticipantList.js"
 export type { GroupParticipantListV2Options } from "./groupParticipantListV2.js"
 export type { GroupParticipantAddOptions } from "./groupParticipantAdd.js"
 export type { GroupParticipantRemoveOptions } from "./groupParticipantRemove.js"
+export type { GroupParticipantJoinRequestListOptions } from "./groupParticipantJoinRequestList.js"
+export type { GroupParticipantJoinRequestApproveOptions } from "./groupParticipantJoinRequestApprove.js"
+export type { GroupParticipantJoinRequestRejectOptions } from "./groupParticipantJoinRequestReject.js"
 export type { GroupAdminPromoteOptions } from "./groupAdminPromote.js"
 export type { GroupAdminDemoteOptions } from "./groupAdminDemote.js"
 

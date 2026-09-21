@@ -30,6 +30,21 @@ export type GroupJoinRequest = {
   code: string
 }
 
+export type GroupJoinRequestResponse = {
+  requesterId: string
+  requesterPn?: string | null
+  addedById: string | null
+  parentGroupId: string | null
+  requestMethod: string | null
+  timestamp: number
+}
+
+export type GroupJoinRequestResult = {
+  requesterId: string | null
+  success: boolean
+  error?: number
+}
+
 export type GroupJoinResponse = {
   id: string
 }
@@ -61,6 +76,14 @@ export type GroupRefreshResponse = {
 
 export type SettingsSecurityChangeInfo = {
   adminsOnly: boolean
+}
+
+export type SettingsMemberAddMode = {
+  membersCanAddNewMember: boolean
+}
+
+export type SettingsMembershipApproval = {
+  newMembersApprovalRequired: boolean
 }
 
 export type ChatPictureResponse = {
