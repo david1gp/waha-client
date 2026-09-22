@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, mock, test } from "bun:test"
-import { messageTextSend } from "../src/messageTextSend.js"
-import { numberStatusCheck } from "../src/numberStatusCheck.js"
-import { messageIdNewGet } from "../src/messageIdNewGet.js"
-import { messageReactionSet } from "../src/messageReactionSet.js"
-import { wahaClientConfig } from "../src/wahaClientConfig.js"
+import { messageTextSend } from "../src/messages/messageTextSend.js"
+import { numberStatusCheck } from "../src/messages/numberStatusCheck.js"
+import { messageIdNewGet } from "../src/messages/messageIdNewGet.js"
+import { messageReactionSet } from "../src/messages/messageReactionSet.js"
+import { wahaClientConfig } from "../src/client/wahaClientConfig.js"
 
 describe("chattingApi", () => {
   const originalFetch = globalThis.fetch
@@ -71,6 +71,18 @@ describe("chattingApi", () => {
       chatId: "111@c.us",
       text: "hi",
     })
+  })
+
+  test("message validation returns a ResultErr for circular invalid options", async () => {
+    const configR = wahaClientConfig({ baseUrl: "http://localhost:3000", session: "default" })
+    if (!configR.success) return
+
+    const options = { config: configR.data, chatId: "111@c.us", text: 123 } as Record<string, unknown>
+    options.self = options
+    const r = await messageTextSend(options as never)
+
+    expect(r.success).toBe(false)
+    if (!r.success) expect(r.op).toBe("messageTextSend")
   })
 
   test("numberStatusCheck GET with session query", async () => {

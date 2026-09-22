@@ -1,18 +1,18 @@
 import { afterEach, describe, expect, mock, test } from "bun:test"
-import { groupCreate } from "../src/groupCreate.js"
-import { groupGet } from "../src/groupGet.js"
-import { groupJoinInfoGet } from "../src/groupJoinInfoGet.js"
-import { groupList } from "../src/groupList.js"
-import { groupMemberAddModeGet } from "../src/groupMemberAddModeGet.js"
-import { groupMemberAddModeSet } from "../src/groupMemberAddModeSet.js"
-import { groupMembershipApprovalGet } from "../src/groupMembershipApprovalGet.js"
-import { groupMembershipApprovalSet } from "../src/groupMembershipApprovalSet.js"
-import { groupParticipantJoinRequestApprove } from "../src/groupParticipantJoinRequestApprove.js"
-import { groupParticipantJoinRequestList } from "../src/groupParticipantJoinRequestList.js"
-import { groupParticipantJoinRequestReject } from "../src/groupParticipantJoinRequestReject.js"
-import type { GroupInfo } from "../src/groupTypes.js"
+import { groupCreate } from "../src/groups/groupCreate.js"
+import { groupGet } from "../src/groups/groupGet.js"
+import { groupJoinInfoGet } from "../src/groups/groupJoinInfoGet.js"
+import { groupList } from "../src/groups/groupList.js"
+import { groupMemberAddModeGet } from "../src/groups/groupMemberAddModeGet.js"
+import { groupMemberAddModeSet } from "../src/groups/groupMemberAddModeSet.js"
+import { groupMembershipApprovalGet } from "../src/groups/groupMembershipApprovalGet.js"
+import { groupMembershipApprovalSet } from "../src/groups/groupMembershipApprovalSet.js"
+import { groupParticipantJoinRequestApprove } from "../src/groups/groupParticipantJoinRequestApprove.js"
+import { groupParticipantJoinRequestList } from "../src/groups/groupParticipantJoinRequestList.js"
+import { groupParticipantJoinRequestReject } from "../src/groups/groupParticipantJoinRequestReject.js"
+import type { GroupInfo } from "../src/groups/groupInfo.js"
 import * as publicApi from "../src/index.js"
-import { wahaClientConfig } from "../src/wahaClientConfig.js"
+import { wahaClientConfig } from "../src/client/wahaClientConfig.js"
 
 describe("groupApi", () => {
   const originalFetch = globalThis.fetch
@@ -425,6 +425,18 @@ describe("groupApi", () => {
     ]
     expect(results.every((result) => !result.success)).toBe(true)
     expect(fetchMock.mock.calls.length).toBe(0)
+  })
+
+  test("group validation returns a ResultErr for circular invalid options", async () => {
+    const configR = wahaClientConfig({ baseUrl: "http://localhost:3000", session: "default" })
+    if (!configR.success) return
+
+    const options = { config: configR.data, id: 123 } as Record<string, unknown>
+    options.self = options
+    const r = await groupMemberAddModeGet(options as never)
+
+    expect(r.success).toBe(false)
+    if (!r.success) expect(r.op).toBe("groupMemberAddModeGet")
   })
 
   test("group membership methods reject missing session without fetching", async () => {

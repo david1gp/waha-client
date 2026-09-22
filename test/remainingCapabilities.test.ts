@@ -1,8 +1,9 @@
 import { afterEach, describe, expect, mock, test } from "bun:test"
-import { messageStickerSend } from "../src/messageStickerSend.js"
-import { sessionCappingGet } from "../src/sessionCappingGet.js"
-import { sessionTimelockGet } from "../src/sessionTimelockGet.js"
-import { wahaClientConfig } from "../src/wahaClientConfig.js"
+import { messageStickerSend } from "../src/messages/messageStickerSend.js"
+import { mediaVideoConvert } from "../src/media/mediaVideoConvert.js"
+import { sessionCappingGet } from "../src/sessions/sessionCappingGet.js"
+import { sessionTimelockGet } from "../src/sessions/sessionTimelockGet.js"
+import { wahaClientConfig } from "../src/client/wahaClientConfig.js"
 
 describe("remainingCapabilities", () => {
   const originalFetch = globalThis.fetch
@@ -78,5 +79,17 @@ describe("remainingCapabilities", () => {
     expect(url).toBe("http://localhost:3000/api/my%20session/timelock")
     expect(init.method).toBe("GET")
     expect(init.body).toBeUndefined()
+  })
+
+  test("media validation returns a ResultErr for circular invalid options", async () => {
+    const configR = wahaClientConfig({ baseUrl: "http://localhost:3000", session: "default" })
+    if (!configR.success) return
+
+    const options = { config: configR.data } as Record<string, unknown>
+    options.self = options
+    const r = await mediaVideoConvert(options as never)
+
+    expect(r.success).toBe(false)
+    if (!r.success) expect(r.op).toBe("mediaVideoConvert")
   })
 })

@@ -1,11 +1,11 @@
 import { afterEach, describe, expect, mock, test } from "bun:test"
-import { channelList } from "../src/channelList.js"
-import { channelCreate } from "../src/channelCreate.js"
-import { labelList } from "../src/labelList.js"
-import { labelCreate } from "../src/labelCreate.js"
-import { presenceSet } from "../src/presenceSet.js"
-import { presenceList } from "../src/presenceList.js"
-import { wahaClientConfig } from "../src/wahaClientConfig.js"
+import { channelList } from "../src/channels/channelList.js"
+import { channelCreate } from "../src/channels/channelCreate.js"
+import { labelList } from "../src/labels/labelList.js"
+import { labelCreate } from "../src/labels/labelCreate.js"
+import { presenceSet } from "../src/presence/presenceSet.js"
+import { presenceList } from "../src/presence/presenceList.js"
+import { wahaClientConfig } from "../src/client/wahaClientConfig.js"
 
 describe("channels", () => {
   const originalFetch = globalThis.fetch

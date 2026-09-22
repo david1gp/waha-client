@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, mock, test } from "bun:test"
-import { contactGet } from "../src/contactGet.js"
-import { contactList } from "../src/contactList.js"
-import { wahaClientConfig } from "../src/wahaClientConfig.js"
+import { contactGet } from "../src/contacts/contactGet.js"
+import { contactList } from "../src/contacts/contactList.js"
+import { wahaClientConfig } from "../src/client/wahaClientConfig.js"
 
 describe("contacts + lids", () => {
   const originalFetch = globalThis.fetch

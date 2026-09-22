@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, mock, test } from "bun:test"
-import { profileGet } from "../src/profileGet.js"
-import { screenshotGet } from "../src/screenshotGet.js"
-import { serverPing } from "../src/serverPing.js"
-import { wahaClientConfig } from "../src/wahaClientConfig.js"
+import { profileGet } from "../src/profile/profileGet.js"
+import { screenshotGet } from "../src/server/screenshotGet.js"
+import { serverPing } from "../src/server/serverPing.js"
+import { wahaClientConfig } from "../src/client/wahaClientConfig.js"
 
 describe("profile + server endpoints", () => {
   const originalFetch = globalThis.fetch

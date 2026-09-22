@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, mock, test } from "bun:test"
-import { apiKeyList } from "../src/apiKeyList.js"
-import { appList } from "../src/appList.js"
-import { wahaClientConfig } from "../src/wahaClientConfig.js"
+import { apiKeyList } from "../src/apiKeys/apiKeyList.js"
+import { appList } from "../src/apps/appList.js"
+import { wahaClientConfig } from "../src/client/wahaClientConfig.js"
 
 describe("api keys + apps + storage", () => {
   const originalFetch = globalThis.fetch

@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, mock, test } from "bun:test"
-import { sessionList } from "../src/sessionList.js"
-import { sessionStart } from "../src/sessionStart.js"
-import { wahaClientConfig } from "../src/wahaClientConfig.js"
+import { sessionList } from "../src/sessions/sessionList.js"
+import { sessionStart } from "../src/sessions/sessionStart.js"
+import { wahaClientConfig } from "../src/client/wahaClientConfig.js"
 
 describe("sessionApi", () => {
   const originalFetch = globalThis.fetch
@@ -82,5 +82,17 @@ describe("sessionApi", () => {
 
     const r = await sessionStart({ config: configR.data })
     expect(r.success).toBe(false)
+  })
+
+  test("session validation returns a ResultErr for circular invalid options", async () => {
+    const configR = wahaClientConfig({ baseUrl: "http://localhost:3000" })
+    if (!configR.success) return
+
+    const options = { config: configR.data, session: 123 } as Record<string, unknown>
+    options.self = options
+    const r = await sessionStart(options as never)
+
+    expect(r.success).toBe(false)
+    if (!r.success) expect(r.op).toBe("sessionStart")
   })
 })

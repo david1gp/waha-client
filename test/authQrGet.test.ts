@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, mock, test } from "bun:test"
-import { authQrGet } from "../src/authQrGet.js"
-import { wahaClientConfig } from "../src/wahaClientConfig.js"
+import { authQrGet } from "../src/auth/authQrGet.js"
+import { wahaClientConfig } from "../src/client/wahaClientConfig.js"
 
 describe("authQrGet", () => {
   const originalFetch = globalThis.fetch

@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, mock, test } from "bun:test"
-import { chatList } from "../src/chatList.js"
-import { chatMessageList } from "../src/chatMessageList.js"
-import { wahaClientConfig } from "../src/wahaClientConfig.js"
+import { chatList } from "../src/chats/chatList.js"
+import { chatMessageList } from "../src/chats/chatMessageList.js"
+import { wahaClientConfig } from "../src/client/wahaClientConfig.js"
 
 describe("chatApi", () => {
   const originalFetch = globalThis.fetch

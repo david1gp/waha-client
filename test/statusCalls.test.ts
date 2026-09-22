@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, mock, test } from "bun:test"
-import { callReject } from "../src/callReject.js"
-import { statusTextSend } from "../src/statusTextSend.js"
-import { wahaClientConfig } from "../src/wahaClientConfig.js"
+import { callReject } from "../src/calls/callReject.js"
+import { statusTextSend } from "../src/status/statusTextSend.js"
+import { wahaClientConfig } from "../src/client/wahaClientConfig.js"
 
 describe("statusCalls", () => {
   const originalFetch = globalThis.fetch

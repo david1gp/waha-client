@@ -68,6 +68,82 @@
     "./*.js": {
       "types": "./dist/*.d.ts",
       "import": "./dist/*.js"
+    },
+    "./apiKeys/*.js": {
+      "types": "./dist/apiKeys/*.d.ts",
+      "import": "./dist/apiKeys/*.js"
+    },
+    "./apps/*.js": {
+      "types": "./dist/apps/*.d.ts",
+      "import": "./dist/apps/*.js"
+    },
+    "./auth/*.js": {
+      "types": "./dist/auth/*.d.ts",
+      "import": "./dist/auth/*.js"
+    },
+    "./calls/*.js": {
+      "types": "./dist/calls/*.d.ts",
+      "import": "./dist/calls/*.js"
+    },
+    "./channels/*.js": {
+      "types": "./dist/channels/*.d.ts",
+      "import": "./dist/channels/*.js"
+    },
+    "./chats/*.js": {
+      "types": "./dist/chats/*.d.ts",
+      "import": "./dist/chats/*.js"
+    },
+    "./client/*.js": {
+      "types": "./dist/client/*.d.ts",
+      "import": "./dist/client/*.js"
+    },
+    "./contacts/*.js": {
+      "types": "./dist/contacts/*.d.ts",
+      "import": "./dist/contacts/*.js"
+    },
+    "./events/*.js": {
+      "types": "./dist/events/*.d.ts",
+      "import": "./dist/events/*.js"
+    },
+    "./groups/*.js": {
+      "types": "./dist/groups/*.d.ts",
+      "import": "./dist/groups/*.js"
+    },
+    "./labels/*.js": {
+      "types": "./dist/labels/*.d.ts",
+      "import": "./dist/labels/*.js"
+    },
+    "./lids/*.js": {
+      "types": "./dist/lids/*.d.ts",
+      "import": "./dist/lids/*.js"
+    },
+    "./media/*.js": {
+      "types": "./dist/media/*.d.ts",
+      "import": "./dist/media/*.js"
+    },
+    "./messages/*.js": {
+      "types": "./dist/messages/*.d.ts",
+      "import": "./dist/messages/*.js"
+    },
+    "./presence/*.js": {
+      "types": "./dist/presence/*.d.ts",
+      "import": "./dist/presence/*.js"
+    },
+    "./profile/*.js": {
+      "types": "./dist/profile/*.d.ts",
+      "import": "./dist/profile/*.js"
+    },
+    "./server/*.js": {
+      "types": "./dist/server/*.d.ts",
+      "import": "./dist/server/*.js"
+    },
+    "./sessions/*.js": {
+      "types": "./dist/sessions/*.d.ts",
+      "import": "./dist/sessions/*.js"
+    },
+    "./status/*.js": {
+      "types": "./dist/status/*.d.ts",
+      "import": "./dist/status/*.js"
     }
   },
   "files": [
