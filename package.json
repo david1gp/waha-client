@@ -31,7 +31,7 @@
     "dev": "bun run src/cli.ts",
     "test": "bun test",
     "test:w": "bun test --watch",
-    "build": "rm -rf ./dist && tsc -p ./tsconfig.lib.json",
+    "build": "rm -rf ./dist && tsc -p ./tsconfig.lib.json && chmod +x ./dist/cli.js",
     "tsc": "tsc --noEmit",
     "release": "bash ./ops/release.sh",
     "update": "bun update",
