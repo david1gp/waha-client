@@ -21,12 +21,13 @@ Implement a small shared response-validation/normalization boundary and apply it
 1. Implement normalization, types, documentation and focused tests; run typecheck/tests/build. Status: completed.
 2. Independently review scope, correctness and verification; resolve any findings. Status: completed.
 3. Delegate a fresh Luna agent to load commits skill, create conventional commits and push task changes. Status: completed.
-4. Delegate a fresh Luna agent to release 0.5.0, monitor GitHub Actions through completion, verify GitHub release and npm package; diagnose and correct failures and retry/re-release as necessary. Status: pending.
+4. Delegate a fresh Luna agent to release 0.5.0, monitor GitHub Actions through completion, verify GitHub release and npm package; diagnose and correct failures and retry/re-release as necessary. Status: completed.
 
 ## Current context
-- Working repository version is 0.4.1. The four group methods now share a Valibot response normalizer and expose jid/name.
+- Released version is 0.5.0. The four group methods share a Valibot response normalizer and expose jid/name.
 - Deployed WAHA 2026.8.2 GOWS returns raw GOWS JSON for the four methods. Its OpenAPI does not provide concrete response schemas for these routes. The normalized GroupInfo schema is used for events instead.
 - Relevant areas: src/groupTypes.ts, the four group method files, src/wahaRequest.ts, test/groupApi.test.ts, README.md, ops/release.sh and .github/workflows/publish.yml.
 - Pre-existing edits include group capability work in README, CLI, index, tests and untracked capability files. Preserve and distinguish these from this task.
 - The implementation baseline patch is /tmp/opencode/waha-client-baseline-20260921.patch; use it to distinguish pre-existing changes during review and commits.
-- The implementation and independent review are complete. Commit only the group response normalization and its documentation/tests; leave the baseline capability work intact and uncommitted.
+- The implementation and independent review are complete. Task changes are committed and pushed. Leave unrelated working-tree work intact and uncommitted.
+- Release was made from an isolated committed tree; unrelated local work remains untouched.
