@@ -4,7 +4,7 @@ import { dirname, relative, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import { buildCommand, type CommandContext } from "@stricli/core"
 import pkg from "../../package.json" with { type: "json" }
-import { PACKAGE_VERSION } from "../packageVersion.js"
+import { PACKAGE_VERSION } from "../client/PACKAGE_VERSION.js"
 
 type VersionFlags = {
   verbose?: boolean
