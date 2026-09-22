@@ -1,8 +1,13 @@
 import { afterEach, describe, expect, mock, test } from "bun:test"
-import { wahaClientConfig } from "../src/wahaClientConfig.js"
-import { wahaClientFromEnv } from "../src/wahaClientFromEnv.js"
-import { wahaPathApi, wahaPathSession } from "../src/wahaPath.js"
-import { wahaRequest, wahaRequestBodyWithSession, wahaRequestQueryString, wahaRequestUrl } from "../src/wahaRequest.js"
+import { wahaClientConfig } from "../src/client/wahaClientConfig.js"
+import type { WahaClientConfigInput } from "../src/client/wahaClientConfigSchema.js"
+import { wahaClientFromEnv } from "../src/client/wahaClientFromEnv.js"
+import { wahaPathApi } from "../src/client/wahaPathApi.js"
+import { wahaPathSession } from "../src/client/wahaPathSession.js"
+import { wahaRequest } from "../src/client/wahaRequest.js"
+import { wahaRequestBodyWithSession } from "../src/client/wahaRequestBodyWithSession.js"
+import { wahaRequestQueryString } from "../src/client/wahaRequestQueryString.js"
+import { wahaRequestUrl } from "../src/client/wahaRequestUrl.js"
 
 describe("wahaRequestBodyWithSession", () => {
   test("injects session when missing", () => {
@@ -81,6 +86,15 @@ describe("wahaClientConfig", () => {
       expect(r.data.timeoutMs).toBe(5000)
       expect(r.data.retries).toBe(2)
     }
+  })
+
+  test("returns a ResultErr for circular invalid input", () => {
+    const input = { baseUrl: "not a url" } as WahaClientConfigInput & Record<string, unknown>
+    input.self = input
+
+    const r = wahaClientConfig(input)
+    expect(r.success).toBe(false)
+    if (!r.success) expect(r.op).toBe("wahaClientConfig")
   })
 })
 
@@ -169,6 +183,61 @@ describe("wahaRequest fetch", () => {
       text: "hi",
       session: "default",
     })
+  })
+
+  test("returns a ResultErr for a circular body instead of rejecting", async () => {
+    globalThis.fetch = mock(async () => new Response("{}", { status: 200 })) as unknown as typeof fetch
+    const configR = wahaClientConfig({ baseUrl: "http://localhost:3000" })
+    if (!configR.success) return
+
+    const body: Record<string, unknown> = {}
+    body.self = body
+    const r = await wahaRequest({
+      config: configR.data,
+      method: "POST",
+      path: "/api/x",
+      body,
+    })
+
+    expect(r.success).toBe(false)
+    if (!r.success) expect(r.op).toBe("wahaRequest")
+  })
+
+  test("returns a ResultErr for a non-serializable body instead of rejecting", async () => {
+    globalThis.fetch = mock(async () => new Response("{}", { status: 200 })) as unknown as typeof fetch
+    const configR = wahaClientConfig({ baseUrl: "http://localhost:3000" })
+    if (!configR.success) return
+
+    const r = await wahaRequest({
+      config: configR.data,
+      method: "POST",
+      path: "/api/x",
+      body: { value: BigInt(1) },
+    })
+
+    expect(r.success).toBe(false)
+    if (!r.success) expect(r.op).toBe("wahaRequest")
+  })
+
+  test("returns a ResultErr when query value conversion fails", async () => {
+    globalThis.fetch = mock(async () => new Response("{}", { status: 200 })) as unknown as typeof fetch
+    const configR = wahaClientConfig({ baseUrl: "http://localhost:3000" })
+    if (!configR.success) return
+
+    const queryValue = {
+      [Symbol.toPrimitive](): never {
+        throw new Error("query conversion failed")
+      },
+    } as unknown as string
+    const r = await wahaRequest({
+      config: configR.data,
+      method: "GET",
+      path: "/api/x",
+      query: { value: queryValue },
+    })
+
+    expect(r.success).toBe(false)
+    if (!r.success) expect(r.op).toBe("wahaRequest")
   })
 
   test("4xx is not retried", async () => {
