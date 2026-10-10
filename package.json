@@ -32,7 +32,7 @@
     "test": "bun test",
     "test:w": "bun test --watch",
     "build": "rm -rf ./dist && tsc -p ./tsconfig.lib.json && chmod +x ./dist/cli.js",
-    "tsc": "tsc --noEmit",
+    "tsc": "bun check",
     "release": "bash ./ops/release.sh",
     "update": "bun update",
     "update:commit": "bun update && git add package.json && bun run tsc && git commit -m \"chore(deps): update dependencies\" && git push",
