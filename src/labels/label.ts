@@ -3,4 +3,6 @@ export type Label = {
   name: string
   color: number
   colorHex: string
+  type?: number
+  isActive?: boolean
 }
