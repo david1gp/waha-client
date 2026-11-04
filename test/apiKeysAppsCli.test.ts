@@ -46,7 +46,20 @@ describe("API key and app CLI routes", () => {
 
   test("exports all API-key and app operations as discoverable routes", () => {
     expect(routeNames(apiKeyCommands)).toEqual(["create", "list", "media-create", "control-create", "update", "delete"])
-    expect(routeNames(appCommands)).toEqual(["list", "create", "get", "update", "delete", "chatwoot-locales"])
+    expect(routeNames(appCommands)).toEqual([
+      "list",
+      "create",
+      "get",
+      "update",
+      "delete",
+      "purge",
+      "session-purge",
+      "chatwoot-locales",
+      "phone-cache-db",
+      "phone-cache-memory",
+      "phone-cache-stats",
+      "phone-cache-purge",
+    ])
   })
 
   test("forwards API-key JSON bodies, IDs, and session-scoped creation", async () => {
