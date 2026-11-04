@@ -216,10 +216,21 @@ const stopCommand = buildCommand({
 })
 
 const logoutCommand = buildCommand({
-  async func(this: CommandContext, flags: SessionNameFlags) {
-    await cliRunApi(this, flags, (config) => sessionLogout({ config, session: flags.session }))
+  async func(this: CommandContext, flags: SessionNameFlags & { purge?: boolean }) {
+    await cliRunApi(this, flags, (config) =>
+      sessionLogout({
+        config,
+        session: flags.session,
+        ...(flags.purge !== undefined ? { apps: { purge: flags.purge } } : {}),
+      }),
+    )
   },
-  parameters: { flags: { ...cliConfigFlagParams } },
+  parameters: {
+    flags: {
+      ...cliConfigFlagParams,
+      purge: cliScalarFlagParams.optionalBoolean("Purge the session apps' storage on logout"),
+    },
+  },
   docs: { brief: "Logout a session" },
 })
 

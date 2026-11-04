@@ -23,11 +23,17 @@ import { groupLeave } from "../groupLeave.js"
 import { groupList } from "../groupList.js"
 import { groupMemberAddModeGet } from "../groupMemberAddModeGet.js"
 import { groupMemberAddModeSet } from "../groupMemberAddModeSet.js"
+import { groupMemberShareHistoryModeGet } from "../groupMemberShareHistoryModeGet.js"
+import { groupMemberShareHistoryModeSet } from "../groupMemberShareHistoryModeSet.js"
 import { groupMembershipApprovalGet } from "../groupMembershipApprovalGet.js"
 import { groupMembershipApprovalSet } from "../groupMembershipApprovalSet.js"
 import { groupMessagesAdminOnlyGet } from "../groupMessagesAdminOnlyGet.js"
 import { groupMessagesAdminOnlySet } from "../groupMessagesAdminOnlySet.js"
 import { groupParticipantAdd } from "../groupParticipantAdd.js"
+import { groupParticipantTagGet } from "../groupParticipantTagGet.js"
+import { groupParticipantTagMyGet } from "../groupParticipantTagMyGet.js"
+import { groupParticipantTagMySet } from "../groupParticipantTagMySet.js"
+import { groupParticipantTagsGet } from "../groupParticipantTagsGet.js"
 import { groupParticipantJoinRequestApprove } from "../groupParticipantJoinRequestApprove.js"
 import { groupParticipantJoinRequestList } from "../groupParticipantJoinRequestList.js"
 import { groupParticipantJoinRequestReject } from "../groupParticipantJoinRequestReject.js"
@@ -237,6 +243,15 @@ const idOnlyCommands = {
     parameters: { flags: { ...cliConfigFlagParams, id: cliScalarFlagParams.requiredString("Group id") } },
     docs: { brief: "Get group membership approval setting" },
   }),
+  memberShareHistoryMode: buildCommand({
+    async func(this: CommandContext, flags: CliConfigFlags & { id: string }) {
+      await cliRunApi(this, flags, (config) =>
+        groupMemberShareHistoryModeGet({ config, session: flags.session, id: flags.id }),
+      )
+    },
+    parameters: { flags: { ...cliConfigFlagParams, id: cliScalarFlagParams.requiredString("Group id") } },
+    docs: { brief: "Get group member share history setting" },
+  }),
   inviteCode: buildCommand({
     async func(this: CommandContext, flags: CliConfigFlags & { id: string }) {
       await cliRunApi(this, flags, (config) => groupInviteCodeGet({ config, session: flags.session, id: flags.id }))
@@ -264,6 +279,24 @@ const idOnlyCommands = {
     },
     parameters: { flags: { ...cliConfigFlagParams, id: cliScalarFlagParams.requiredString("Group id") } },
     docs: { brief: "List group participants using the v2 endpoint" },
+  }),
+  tags: buildCommand({
+    async func(this: CommandContext, flags: CliConfigFlags & { id: string }) {
+      await cliRunApi(this, flags, (config) =>
+        groupParticipantTagsGet({ config, session: flags.session, id: flags.id }),
+      )
+    },
+    parameters: { flags: { ...cliConfigFlagParams, id: cliScalarFlagParams.requiredString("Group id") } },
+    docs: { brief: "List group member tags" },
+  }),
+  tagMyGet: buildCommand({
+    async func(this: CommandContext, flags: CliConfigFlags & { id: string }) {
+      await cliRunApi(this, flags, (config) =>
+        groupParticipantTagMyGet({ config, session: flags.session, id: flags.id }),
+      )
+    },
+    parameters: { flags: { ...cliConfigFlagParams, id: cliScalarFlagParams.requiredString("Group id") } },
+    docs: { brief: "Get my member tag in a group" },
   }),
   joinRequests: buildCommand({
     async func(this: CommandContext, flags: CliConfigFlags & { id: string }) {
@@ -413,6 +446,26 @@ const booleanSettingCommands = {
     },
     docs: { brief: "Set group membership approval" },
   }),
+  memberShareHistoryModeSet: buildCommand({
+    async func(this: CommandContext, flags: CliConfigFlags & { id: string; membersCanShareHistory: boolean }) {
+      await cliRunApi(this, flags, (config) =>
+        groupMemberShareHistoryModeSet({
+          config,
+          session: flags.session,
+          id: flags.id,
+          membersCanShareHistory: flags.membersCanShareHistory,
+        }),
+      )
+    },
+    parameters: {
+      flags: {
+        ...cliConfigFlagParams,
+        id: cliScalarFlagParams.requiredString("Group id"),
+        membersCanShareHistory: cliScalarFlagParams.requiredBoolean("Allow members to share history"),
+      },
+    },
+    docs: { brief: "Set group member share history" },
+  }),
 }
 
 const participantsAddCommand = buildCommand({
@@ -540,6 +593,48 @@ const adminPromoteCommand = buildCommand({
   docs: { brief: "Promote group admins" },
 })
 
+const tagGetCommand = buildCommand({
+  async func(this: CommandContext, flags: CliConfigFlags & { id: string; participantId: string }) {
+    await cliRunApi(this, flags, (config) =>
+      groupParticipantTagGet({
+        config,
+        session: flags.session,
+        id: flags.id,
+        participantId: flags.participantId,
+      }),
+    )
+  },
+  parameters: {
+    flags: {
+      ...cliConfigFlagParams,
+      id: cliScalarFlagParams.requiredString("Group id"),
+      participantId: cliScalarFlagParams.requiredString("Participant id"),
+    },
+  },
+  docs: { brief: "Get one group member tag" },
+})
+
+const tagMySetCommand = buildCommand({
+  async func(this: CommandContext, flags: CliConfigFlags & { id: string; tag: string }) {
+    await cliRunApi(this, flags, (config) =>
+      groupParticipantTagMySet({
+        config,
+        session: flags.session,
+        id: flags.id,
+        tag: flags.tag,
+      }),
+    )
+  },
+  parameters: {
+    flags: {
+      ...cliConfigFlagParams,
+      id: cliScalarFlagParams.requiredString("Group id"),
+      tag: cliScalarFlagParams.requiredString("Member tag (empty string removes it)"),
+    },
+  },
+  docs: { brief: "Set my member tag in a group" },
+})
+
 const adminDemoteCommand = buildCommand({
   async func(this: CommandContext, flags: CliConfigFlags & { id: string; participantsJson: string }) {
     await cliRunApi(this, flags, (config) =>
@@ -589,12 +684,18 @@ export const groupCommands = buildRouteMap({
     "member-add-mode-set": booleanSettingCommands.memberAddModeSet,
     "membership-approval": idOnlyCommands.membershipApproval,
     "membership-approval-set": booleanSettingCommands.membershipApprovalSet,
+    "member-share-history-mode": idOnlyCommands.memberShareHistoryMode,
+    "member-share-history-mode-set": booleanSettingCommands.memberShareHistoryModeSet,
     "invite-code": idOnlyCommands.inviteCode,
     "invite-code-revoke": idOnlyCommands.inviteCodeRevoke,
     participants: idOnlyCommands.participants,
     "participants-v2": idOnlyCommands.participantsV2,
     "participants-add": participantsAddCommand,
     "participants-remove": participantsRemoveCommand,
+    tags: idOnlyCommands.tags,
+    "tag-get": tagGetCommand,
+    "tag-my-get": idOnlyCommands.tagMyGet,
+    "tag-my-set": tagMySetCommand,
     "join-requests": idOnlyCommands.joinRequests,
     "join-requests-approve": joinRequestsApproveCommand,
     "join-requests-reject": joinRequestsRejectCommand,

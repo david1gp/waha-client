@@ -12,7 +12,14 @@ import { appCreate } from "../appCreate.js"
 import { appDelete } from "../appDelete.js"
 import { appGet } from "../appGet.js"
 import { appList } from "../appList.js"
+import { appPurge } from "../appPurge.js"
+import { appSessionPurge } from "../appSessionPurge.js"
 import { appUpdate } from "../appUpdate.js"
+import { phoneNumbersCacheDbGet } from "../phoneNumbersCacheDbGet.js"
+import { phoneNumbersCacheMemoryGet } from "../phoneNumbersCacheMemoryGet.js"
+import { phoneNumbersCachePurge } from "../phoneNumbersCachePurge.js"
+import { phoneNumbersCacheStatsGet } from "../phoneNumbersCacheStatsGet.js"
+import type { PhoneNumbersAppName } from "../phoneNumbersAppName.js"
 
 const sessionlessConfigFlagParams = {
   baseUrl: cliConfigFlagParams.baseUrl,
@@ -103,6 +110,116 @@ const chatwootLocalesCommand = buildCommand({
   docs: { brief: "List Chatwoot locales" },
 })
 
+const purgeCommand = buildCommand({
+  async func(this: CommandContext, flags: SessionlessFlags & { id: string }) {
+    await cliRunApi(this, flags, (config) => appPurge({ config, id: flags.id }))
+  },
+  parameters: {
+    flags: {
+      ...sessionlessConfigFlagParams,
+      id: cliScalarFlagParams.requiredString("App id"),
+    },
+  },
+  docs: { brief: "Purge an app's stored data" },
+})
+
+const sessionPurgeCommand = buildCommand({
+  async func(this: CommandContext, flags: CliConfigFlags & { app: string }) {
+    await cliRunApi(this, flags, (config) => appSessionPurge({ config, app: flags.app, session: flags.session }))
+  },
+  parameters: {
+    flags: {
+      ...cliConfigFlagParams,
+      app: cliScalarFlagParams.requiredString("App name"),
+    },
+  },
+  docs: { brief: "Purge a unique app's stored data for a session" },
+})
+
+const phoneCacheDbCommand = buildCommand({
+  async func(this: CommandContext, flags: CliConfigFlags & { app?: string; limit?: number; offset?: number }) {
+    await cliRunApi(this, flags, (config) =>
+      phoneNumbersCacheDbGet({
+        config,
+        session: flags.session,
+        app: flags.app as PhoneNumbersAppName | undefined,
+        limit: flags.limit,
+        offset: flags.offset,
+      }),
+    )
+  },
+  parameters: {
+    flags: {
+      ...cliConfigFlagParams,
+      app: cliScalarFlagParams.optionalString("Phone numbers app (default phone-numbers)"),
+      limit: cliScalarFlagParams.optionalNumber("Max cache entries to return"),
+      offset: cliScalarFlagParams.optionalNumber("Offset for pagination"),
+    },
+  },
+  docs: { brief: "List phone numbers persistent cache entries" },
+})
+
+const phoneCacheMemoryCommand = buildCommand({
+  async func(this: CommandContext, flags: CliConfigFlags & { app?: string; limit?: number; offset?: number }) {
+    await cliRunApi(this, flags, (config) =>
+      phoneNumbersCacheMemoryGet({
+        config,
+        session: flags.session,
+        app: flags.app as PhoneNumbersAppName | undefined,
+        limit: flags.limit,
+        offset: flags.offset,
+      }),
+    )
+  },
+  parameters: {
+    flags: {
+      ...cliConfigFlagParams,
+      app: cliScalarFlagParams.optionalString("Phone numbers app (default phone-numbers)"),
+      limit: cliScalarFlagParams.optionalNumber("Max cache entries to return"),
+      offset: cliScalarFlagParams.optionalNumber("Offset for pagination"),
+    },
+  },
+  docs: { brief: "List phone numbers in-memory cache entries" },
+})
+
+const phoneCacheStatsCommand = buildCommand({
+  async func(this: CommandContext, flags: CliConfigFlags & { app?: string }) {
+    await cliRunApi(this, flags, (config) =>
+      phoneNumbersCacheStatsGet({
+        config,
+        session: flags.session,
+        app: flags.app as PhoneNumbersAppName | undefined,
+      }),
+    )
+  },
+  parameters: {
+    flags: {
+      ...cliConfigFlagParams,
+      app: cliScalarFlagParams.optionalString("Phone numbers app (default phone-numbers)"),
+    },
+  },
+  docs: { brief: "Get phone numbers cache stats" },
+})
+
+const phoneCachePurgeCommand = buildCommand({
+  async func(this: CommandContext, flags: CliConfigFlags & { app?: string }) {
+    await cliRunApi(this, flags, (config) =>
+      phoneNumbersCachePurge({
+        config,
+        session: flags.session,
+        app: flags.app as PhoneNumbersAppName | undefined,
+      }),
+    )
+  },
+  parameters: {
+    flags: {
+      ...cliConfigFlagParams,
+      app: cliScalarFlagParams.optionalString("Phone numbers app (default phone-numbers)"),
+    },
+  },
+  docs: { brief: "Purge the phone numbers resolved-numbers cache" },
+})
+
 export const appCommands = buildRouteMap({
   routes: {
     list: listCommand,
@@ -110,7 +227,13 @@ export const appCommands = buildRouteMap({
     get: getCommand,
     update: updateCommand,
     delete: deleteCommand,
+    purge: purgeCommand,
+    "session-purge": sessionPurgeCommand,
     "chatwoot-locales": chatwootLocalesCommand,
+    "phone-cache-db": phoneCacheDbCommand,
+    "phone-cache-memory": phoneCacheMemoryCommand,
+    "phone-cache-stats": phoneCacheStatsCommand,
+    "phone-cache-purge": phoneCachePurgeCommand,
   },
   docs: { brief: "App operations" },
 })
