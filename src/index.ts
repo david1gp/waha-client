@@ -34,6 +34,7 @@ export type { SessionCreateOptions } from "./sessions/sessionCreateOptionsSchema
 export type { SessionGetOptions } from "./sessions/sessionGetOptionsSchema.js"
 export type { SessionUpdateOptions } from "./sessions/sessionUpdateOptionsSchema.js"
 export type { SessionPathOptions } from "./sessions/sessionPathOptionsSchema.js"
+export type { SessionLogoutOptions } from "./sessions/sessionLogoutOptions.js"
 export type { SessionsStartOptions } from "./sessions/sessionsStartOptionsSchema.js"
 export type { SessionsStopOptions } from "./sessions/sessionsStopOptionsSchema.js"
 export type { SessionsLogoutOptions } from "./sessions/sessionsLogoutOptionsSchema.js"
