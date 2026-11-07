@@ -55,7 +55,11 @@ if (!sent.success) throw new Error(sent.errorMessage)
 
 ### Reads: live vs cached
 
-waha-client caches nothing: every op is one HTTP call to WAHA. Writes (`messageTextSend`, `groupCreate`, …) are always live actions on the paired WhatsApp account. Reads are answered by WAHA's engine (GOWS/NOWEB/WEBJS), which serves many of them from its own store/cache, so results can be stale (e.g. GOWS group info is cached for 24h; use `groupRefresh` to force a refetch). Pictures are cached for 24h unless `refresh=true` forces a live fetch (use sparingly — WhatsApp rate-limits this). Each read op carries a 1-line JSDoc tag: `Cached read`, `Live fetch`, or `WAHA-local read` (no WhatsApp call).
+waha-client caches nothing: every op is one HTTP call to WAHA. Writes (`messageTextSend`, `groupCreate`, …) are always live actions on the paired WhatsApp account. Reads come from three sources, tagged per op in JSDoc:
+
+- **Live fetch** — the engine queries WhatsApp servers at call time (number checks, invite codes, join requests, channel search).
+- **Cached read** — the engine serves its local store, filled by server-relayed sync (history/app-state sync, contact/group/presence events). GOWS (whatsmeow) and NOWEB (Baileys) are linked devices: they talk to WhatsApp servers, never directly to your phone — phone data (contacts, labels, chats) reaches them via that sync, so reads can lag your phone. Known cache times: group info 24h (GOWS + NOWEB persistent store; bust with `groupRefresh`), profile pictures 24h (WAHA-side cache; `refresh=true` re-fetches — use sparingly, WhatsApp rate-limits this), GOWS presence 1h. Other store reads have no fixed TTL; they are as fresh as the last sync/event.
+- **WAHA-local read** — answered from WAHA's own records/session state; no WhatsApp call.
 
 ### Group responses
 

@@ -133,6 +133,19 @@ API calls" point).
   `bun run build` PASS, JSDoc present in generated `dist/*.d.ts`
   (spot-checked incl. `authQrGet` overloads and both community reads),
   doc diff insertions-only.
+- Follow-up (user): proven cache times + data provenance (phone / WA
+  servers / engine store) made explicit. Full WAHA + gows-plus sweep
+  found exactly 3 numeric TTLs backing read ops: WAHA picture cache
+  24h (all engines, base class), group-info cache 24h (GOWS
+  `refreshInterval`; NOWEB persistent store `GROUP_METADATA_CACHE_TIME`
+  — NOWEB in-memory store and WEBJS fetch live), GOWS presence 1h
+  (NOWEB presence has no TTL). All other caches found are internal
+  (media-retry, Baileys retry, Chatwoot, phone-numbers app tiers with
+  configurable TTLs) or dead code. Cached reads get sync provenance
+  ("engine store synced from your WhatsApp account"); engines are
+  linked devices talking to WA servers, never directly to the phone.
+  Correction found by the sweep: `channelList`/`channelGet` are live
+  WA-server queries on GOWS + NOWEB — re-tagged Live fetch.
 - Untracked `docs/20261107_communities.md` in main checkout is a separate
   thread's plan — leave it untouched; the worktree starts from committed
   `main`, this plan file is copied in for subagents.
