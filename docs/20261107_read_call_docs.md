@@ -111,10 +111,14 @@ API calls" point).
   `docs/read-call-docs` @ `419a2d0`), baseline `bun run check` PASS
   (175 tests). Classification: 78 reads (74 GET + 4 POST), 108 mutations
   excluded, 2 WS observers already documented. 78 + 108 = 186 ✓.
-- All 78 read ops annotated (Cached read 37, Live fetch 12(+2 overload
-  lines on `authQrGet`), WAHA-local read 29) + README banner. Presence
-  wording uses generic "engine presence cache" (1 h TTL proven for GOWS
-  only).
+- All 80 read ops annotated (Cached read 37, Live fetch 14 (+2 overload
+  lines on `authQrGet`), WAHA-local read 29) + README banner. Includes
+  the 2 community reads from `5cad98b` (`groupSubgroupList`,
+  `groupLinkedParticipantList` — both Live fetch, live IQ per call in
+  GOWS/NOWEB; `groupLink`/`groupUnlink` are mutations, excluded).
+  Presence wording uses generic "engine presence cache" (1 h TTL
+  proven for GOWS only). Totals on new `main`: 80/190 HTTP ops tagged,
+  192 public ops incl. 2 WS observers.
 - 11 initially-uncertain tags resolved from WAHA source: Live fetch —
   `contactAboutGet` (WEBJS/WPP only), `groupInviteCodeGet`,
   `groupParticipantJoinRequestList`, `channelMessagePreviewGet`,
@@ -124,10 +128,11 @@ API calls" point).
   constants). Pre-existing `@deprecated` on `numberStatusCheck` /
   `messagesGet` sits on their option schemas, not the exports — no
   merge needed.
-- Verified in worktree: `bun run check` PASS (biome clean, 0 type
-  errors, 175 tests), `bun run build` PASS, JSDoc present in generated
-  `dist/*.d.ts` (spot-checked incl. `authQrGet` overloads), diff
-  insertions-only. Remaining: commits, merge to `main`, push, cleanup.
+- Verified in worktree (after rebase onto `c940e10`): `bun run check`
+  PASS (biome clean, 0 type errors, 194 tests incl. community tests),
+  `bun run build` PASS, JSDoc present in generated `dist/*.d.ts`
+  (spot-checked incl. `authQrGet` overloads and both community reads),
+  doc diff insertions-only.
 - Untracked `docs/20261107_communities.md` in main checkout is a separate
   thread's plan — leave it untouched; the worktree starts from committed
   `main`, this plan file is copied in for subagents.
