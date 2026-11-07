@@ -13,6 +13,7 @@ const groupLinkedParticipantListOptionsSchema = a.object({
   id: a.string(),
 })
 
+/** Live fetch · GET /api/{session}/groups/{id}/linked-participants — list participant IDs across a community's subgroups via live WhatsApp queries (GOWS/NOWEB; not on WEBJS). */
 export async function groupLinkedParticipantList(options: GroupLinkedParticipantListOptions): PromiseResult<string[]> {
   const op = "groupLinkedParticipantList"
   const parsed = a.safeParse(groupLinkedParticipantListOptionsSchema, options)

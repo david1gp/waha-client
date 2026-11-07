@@ -20,6 +20,7 @@ const groupSubGroupResponseSchema = a.object({
   isDefaultSubGroup: a.optional(a.boolean(), false),
 })
 
+/** Live fetch · GET /api/{session}/groups/{id}/subgroups — list a community's subgroups via a live WhatsApp query (GOWS/NOWEB; not on WEBJS). */
 export async function groupSubgroupList(options: GroupSubgroupListOptions): PromiseResult<GroupSubGroup[]> {
   const op = "groupSubgroupList"
   const parsed = a.safeParse(groupSubgroupListOptionsSchema, options)
