@@ -9,4 +9,7 @@ export type GroupInfo = {
   membersCanAddNewMember?: boolean
   membersCanSendMessages?: boolean
   newMembersApprovalRequired?: boolean
+  isParent?: boolean
+  linkedParentId?: string
+  isDefaultSubGroup?: boolean
 }

@@ -56,7 +56,9 @@ if (!sent.success) throw new Error(sent.errorMessage)
 ### Group responses
 
 HTTP group info methods (`groupList`, `groupGet`, `groupCreate`, and `groupJoinInfoGet`) return `GroupInfo` with `jid` and
-`name`. The former `id` and `subject` response fields are not returned.
+`name`. The former `id` and `subject` response fields are not returned. Community fields `isParent`,
+`linkedParentId`, and `isDefaultSubGroup` are returned when the server reports them; `groups create` accepts
+`--isParent` / `--linkedParentId`, and `groups link|unlink|subgroups|linked-participants` manage community links.
 
 ### WebSocket events
 
@@ -112,7 +114,7 @@ waha-client server ping|health|version|status|stop|environment|debug-cpu|debug-h
 waha-client events observe|observe-one|create|cancel
 waha-client messages send-text|send-sticker|send-image|send-file|send-voice|send-video|send-link-custom-preview|send-buttons|send-list|forward|send-seen|set-reaction|set-star|send-poll|vote-poll|send-location|send-contact-vcard|reply-buttons|reply|send-link-preview|number-status|message-id-new|list
 waha-client chats list|overview|overview-post|delete|picture|messages|messages-delete-all|message-read|message-get|message-delete|message-edit|message-pin|message-unpin|archive|unarchive|unread
-waha-client groups list|get|create|count|refresh|join-info|join|delete|leave|picture|picture-set|picture-delete|description-set|subject-set|info-admin-only|info-admin-only-set|messages-admin-only|messages-admin-only-set|member-add-mode|member-add-mode-set|membership-approval|membership-approval-set|member-share-history-mode|member-share-history-mode-set|invite-code|invite-code-revoke|participants|participants-v2|participants-add|participants-remove|tags|tag-get|tag-my-get|tag-my-set|join-requests|join-requests-approve|join-requests-reject|admin-promote|admin-demote
+waha-client groups list|get|create|count|refresh|join-info|join|delete|leave|picture|picture-set|picture-delete|description-set|subject-set|info-admin-only|info-admin-only-set|messages-admin-only|messages-admin-only-set|member-add-mode|member-add-mode-set|membership-approval|membership-approval-set|member-share-history-mode|member-share-history-mode-set|invite-code|invite-code-revoke|participants|participants-v2|participants-add|participants-remove|tags|tag-get|tag-my-get|tag-my-set|join-requests|join-requests-approve|join-requests-reject|admin-promote|admin-demote|link|unlink|subgroups|linked-participants
 waha-client contacts list|list-one|check-exists|about|profile-picture|block|unblock|get|update
 waha-client lids list|count|get|by-phone
 waha-client channels list|create|get|delete|message-preview|follow|unfollow|mute|unmute|search-by-view|search-by-text|search-views|search-countries|search-categories

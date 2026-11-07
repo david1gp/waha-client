@@ -28,12 +28,18 @@ const groupInfoResponseSchema = a.object({
   membersCanAddNewMember: a.optional(a.boolean()),
   membersCanSendMessages: a.optional(a.boolean()),
   newMembersApprovalRequired: a.optional(a.boolean()),
+  isParent: a.optional(a.boolean()),
+  linkedParentId: a.optional(a.string()),
+  isDefaultSubGroup: a.optional(a.boolean()),
   JID: a.optional(a.string()),
   OwnerJID: a.optional(a.string()),
   Name: a.optional(a.string()),
   Topic: a.optional(a.string()),
   IsLocked: a.optional(a.boolean()),
   IsAnnounce: a.optional(a.boolean()),
+  IsParent: a.optional(a.boolean()),
+  LinkedParentJID: a.optional(a.string()),
+  IsDefaultSubGroup: a.optional(a.boolean()),
   Participants: a.optional(a.array(gowsGroupParticipantSchema)),
   MemberAddMode: a.optional(a.string()),
   IsJoinApprovalRequired: a.optional(a.boolean()),
@@ -92,6 +98,21 @@ export function groupInfoResponseNormalize(raw: unknown, op: string): Result<Gro
     result.newMembersApprovalRequired = value.newMembersApprovalRequired
   } else if (value.IsJoinApprovalRequired !== undefined) {
     result.newMembersApprovalRequired = value.IsJoinApprovalRequired
+  }
+  if (value.isParent !== undefined) {
+    result.isParent = value.isParent
+  } else if (value.IsParent !== undefined) {
+    result.isParent = value.IsParent
+  }
+  if (value.linkedParentId !== undefined) {
+    result.linkedParentId = value.linkedParentId
+  } else if (value.LinkedParentJID !== undefined && value.LinkedParentJID !== "") {
+    result.linkedParentId = value.LinkedParentJID
+  }
+  if (value.isDefaultSubGroup !== undefined) {
+    result.isDefaultSubGroup = value.isDefaultSubGroup
+  } else if (value.IsDefaultSubGroup !== undefined) {
+    result.isDefaultSubGroup = value.IsDefaultSubGroup
   }
   return createResult(result)
 }

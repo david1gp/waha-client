@@ -20,7 +20,11 @@ import { groupInviteCodeRevoke } from "../groupInviteCodeRevoke.js"
 import { groupJoin } from "../groupJoin.js"
 import { groupJoinInfoGet } from "../groupJoinInfoGet.js"
 import { groupLeave } from "../groupLeave.js"
+import { groupLinkedParticipantList } from "../groupLinkedParticipantList.js"
+import { groupLink } from "../groupLink.js"
 import { groupList } from "../groupList.js"
+import { groupSubgroupList } from "../groupSubgroupList.js"
+import { groupUnlink } from "../groupUnlink.js"
 import { groupMemberAddModeGet } from "../groupMemberAddModeGet.js"
 import { groupMemberAddModeSet } from "../groupMemberAddModeSet.js"
 import { groupMemberShareHistoryModeGet } from "../groupMemberShareHistoryModeGet.js"
@@ -137,13 +141,18 @@ const getCommand = buildCommand({
 })
 
 const createCommand = buildCommand({
-  async func(this: CommandContext, flags: CliConfigFlags & { name: string; participantsJson: string }) {
+  async func(
+    this: CommandContext,
+    flags: CliConfigFlags & { name: string; participantsJson: string; isParent?: boolean; linkedParentId?: string },
+  ) {
     await cliRunApi(this, flags, (config) =>
       groupCreate({
         config,
         session: flags.session,
         name: flags.name,
         participants: requiredJson(flags.participantsJson, "groupCreate", "participantsJson") as GroupParticipantRef[],
+        isParent: flags.isParent,
+        linkedParentId: flags.linkedParentId,
       }),
     )
   },
@@ -152,6 +161,8 @@ const createCommand = buildCommand({
       ...cliConfigFlagParams,
       name: cliScalarFlagParams.requiredString("Group name"),
       participantsJson: requiredJsonFlag("JSON array of participant objects"),
+      isParent: cliScalarFlagParams.optionalBoolean("Create the group as a community parent"),
+      linkedParentId: cliScalarFlagParams.optionalString("Parent community id to create the group in as a subgroup"),
     },
   },
   docs: { brief: "Create a group" },
@@ -307,7 +318,55 @@ const idOnlyCommands = {
     parameters: { flags: { ...cliConfigFlagParams, id: cliScalarFlagParams.requiredString("Group id") } },
     docs: { brief: "List group join requests" },
   }),
+  subgroups: buildCommand({
+    async func(this: CommandContext, flags: CliConfigFlags & { id: string }) {
+      await cliRunApi(this, flags, (config) => groupSubgroupList({ config, session: flags.session, id: flags.id }))
+    },
+    parameters: { flags: { ...cliConfigFlagParams, id: cliScalarFlagParams.requiredString("Community id") } },
+    docs: { brief: "List community subgroups" },
+  }),
+  linkedParticipants: buildCommand({
+    async func(this: CommandContext, flags: CliConfigFlags & { id: string }) {
+      await cliRunApi(this, flags, (config) =>
+        groupLinkedParticipantList({ config, session: flags.session, id: flags.id }),
+      )
+    },
+    parameters: { flags: { ...cliConfigFlagParams, id: cliScalarFlagParams.requiredString("Community id") } },
+    docs: { brief: "List community linked participants" },
+  }),
 }
+
+const linkCommand = buildCommand({
+  async func(this: CommandContext, flags: CliConfigFlags & { id: string; groupId: string }) {
+    await cliRunApi(this, flags, (config) =>
+      groupLink({ config, session: flags.session, id: flags.id, groupId: flags.groupId }),
+    )
+  },
+  parameters: {
+    flags: {
+      ...cliConfigFlagParams,
+      id: cliScalarFlagParams.requiredString("Community id"),
+      groupId: cliScalarFlagParams.requiredString("Group id to link"),
+    },
+  },
+  docs: { brief: "Link a group to a community" },
+})
+
+const unlinkCommand = buildCommand({
+  async func(this: CommandContext, flags: CliConfigFlags & { id: string; groupId: string }) {
+    await cliRunApi(this, flags, (config) =>
+      groupUnlink({ config, session: flags.session, id: flags.id, groupId: flags.groupId }),
+    )
+  },
+  parameters: {
+    flags: {
+      ...cliConfigFlagParams,
+      id: cliScalarFlagParams.requiredString("Community id"),
+      groupId: cliScalarFlagParams.requiredString("Group id to unlink"),
+    },
+  },
+  docs: { brief: "Unlink a group from a community" },
+})
 
 const pictureCommand = buildCommand({
   async func(this: CommandContext, flags: CliConfigFlags & { id: string; refresh?: boolean }) {
@@ -701,6 +760,10 @@ export const groupCommands = buildRouteMap({
     "join-requests-reject": joinRequestsRejectCommand,
     "admin-promote": adminPromoteCommand,
     "admin-demote": adminDemoteCommand,
+    link: linkCommand,
+    unlink: unlinkCommand,
+    subgroups: idOnlyCommands.subgroups,
+    "linked-participants": idOnlyCommands.linkedParticipants,
   },
   docs: { brief: "Group operations" },
 })

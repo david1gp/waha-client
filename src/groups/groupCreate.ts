@@ -17,6 +17,8 @@ const groupCreateOptionsSchema = a.object({
   session: a.optional(a.string()),
   name: a.string(),
   participants: a.array(participantSchema),
+  isParent: a.optional(a.boolean()),
+  linkedParentId: a.optional(a.string()),
 })
 
 export async function groupCreate(options: GroupCreateOptions): PromiseResult<GroupInfo> {
@@ -24,7 +26,10 @@ export async function groupCreate(options: GroupCreateOptions): PromiseResult<Gr
   const parsed = a.safeParse(groupCreateOptionsSchema, options)
   if (!parsed.success) return createResultError(op, a.summarize(parsed.issues))
 
-  const { config, session, name, participants } = parsed.output
+  const { config, session, name, participants, isParent, linkedParentId } = parsed.output
+  if (isParent === true && linkedParentId !== undefined) {
+    return createResultError(op, "'isParent' and 'linkedParentId' are mutually exclusive")
+  }
   const sessionR = wahaResolveSession(op, config, session)
   if (!sessionR.success) return sessionR
 
@@ -32,7 +37,12 @@ export async function groupCreate(options: GroupCreateOptions): PromiseResult<Gr
     config,
     method: "POST",
     path: wahaPathSession(sessionR.data, "/groups"),
-    body: { name, participants },
+    body: {
+      name,
+      participants,
+      ...(isParent !== undefined ? { isParent } : {}),
+      ...(linkedParentId !== undefined ? { linkedParentId } : {}),
+    },
   })
   if (!responseR.success) return responseR
   return groupInfoResponseNormalize(responseR.data, op)

@@ -298,6 +298,10 @@ export { groupParticipantJoinRequestApprove } from "./groups/groupParticipantJoi
 export { groupParticipantJoinRequestReject } from "./groups/groupParticipantJoinRequestReject.js"
 export { groupAdminPromote } from "./groups/groupAdminPromote.js"
 export { groupAdminDemote } from "./groups/groupAdminDemote.js"
+export { groupLink } from "./groups/groupLink.js"
+export { groupUnlink } from "./groups/groupUnlink.js"
+export { groupSubgroupList } from "./groups/groupSubgroupList.js"
+export { groupLinkedParticipantList } from "./groups/groupLinkedParticipantList.js"
 export type { GroupParticipantRole } from "./groups/groupParticipantRole.js"
 export type { GroupParticipant } from "./groups/groupParticipant.js"
 export type { GroupInfo } from "./groups/groupInfo.js"
@@ -358,6 +362,11 @@ export type { GroupParticipantJoinRequestApproveOptions } from "./groups/groupPa
 export type { GroupParticipantJoinRequestRejectOptions } from "./groups/groupParticipantJoinRequestRejectOptions.js"
 export type { GroupAdminPromoteOptions } from "./groups/groupAdminPromoteOptions.js"
 export type { GroupAdminDemoteOptions } from "./groups/groupAdminDemoteOptions.js"
+export type { GroupLinkOptions } from "./groups/groupLinkOptions.js"
+export type { GroupUnlinkOptions } from "./groups/groupUnlinkOptions.js"
+export type { GroupSubGroup } from "./groups/groupSubGroup.js"
+export type { GroupSubgroupListOptions } from "./groups/groupSubgroupListOptions.js"
+export type { GroupLinkedParticipantListOptions } from "./groups/groupLinkedParticipantListOptions.js"
 
 // contacts
 export { contactListAll } from "./contacts/contactListAll.js"

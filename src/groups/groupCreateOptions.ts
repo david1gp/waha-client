@@ -6,4 +6,6 @@ export type GroupCreateOptions = {
   session?: string
   name: string
   participants: GroupCreateRequest["participants"]
+  isParent?: boolean
+  linkedParentId?: string
 }
