@@ -16,19 +16,17 @@ the feature is out of scope (listed under Excluded), even if Baileys could do it
 
 ## Status
 
-Tasks 1–5 done (waha-client `5cad98b`, `bun run check` 194 pass + build). Forks `david1gp/waha` + `david1gp/gows-plus` cloned to `~/adaptive/waha`
-resp. `~/adaptive/gows-plus` (origin=fork, upstream=devlikeapro). Worktrees on
-`feat/communities`: `/tmp/communities-4FFoze/waha` (base `2026.10.1`=`c42f68ab`,
-commits `7b86878f` shared + `5e4739e0` GOWS + `4adae288` NOWEB, pushed to fork;
-build/lint/unit 347 passed), `/tmp/communities-4FFoze/gows-plus`
-(base `v1.0.49`=`50b091b8`, commit `154a40a` pushed, release
-`v1.0.49.1` published with `gows-amd64` + `gows.proto`), `/tmp/communities-4FFoze/waha-client`
-(base `main`=`419a2d0`). Baselines: waha-client group tests pass; gows-plus build+tests
-pass (needs `make build-proto` first, `src/proto` is gitignored); WAHA build/lint/unit
-(339 tests) pass with repo-pinned Node 24.22.0 (at `/tmp/node24/…`; Node 26 breaks
-`better-sqlite3`). Yarn Step 0 needed no change — wa-js checksum matches again upstream.
-Open: no `gows-arm64` asset (no docker/cross toolchain here) — Task 7 first checks deploy
-arch; fix path is fork CI building release assets.
+Tasks 1–7 plus the raw-IQ fix are deployed (gows-plus `master`=`13ba9e3`,
+release `v1.0.49.2`; waha `core`=`d7711669`; waha-client `main`=`5cad98b` + this
+doc `c940e10`; plan-status edits after `c940e10` stay uncommitted until the
+final wrap-up commit). Task 8 confirms community creation, subgroup reads,
+linked-participant reads, link, unlink, and subgroup creation live. Membership
+routing is deployed in gows-plus `v1.0.49.3` (`6404401`) and WAHA `d1c1aca2`:
+ordinary members are added to the announcement/default subgroup, never the
+community parent. `TEST9` proves create-time seeding and that parent-addressed
+adds resolve to the default subgroup. Next: Task 9 upstream-update timer in
+`~/ds` and final wrap-up.
+Runtime is x86_64, so the missing `gows-arm64` asset does not block deployment.
 
 ## Decisions
 
@@ -46,6 +44,11 @@ arch; fix path is fork CI building release assets.
   a `…@g.us` id and stay the single path. New surface is only the community-specific
   delta below. This keeps the fork diff small for upstream sync + a future upstream PR
   against devlikeapro/waha#638.
+- **Community membership routing.** A parent group's participants are its admins.
+  Ordinary member adds, including participants supplied when creating a community,
+  go to the announcement/default subgroup for both GOWS and NOWEB. The explicit
+  participant-add endpoint also routes parent-JID adds there; remove/promote/demote
+  remain addressed to the JID the caller supplied.
 - WEBJS/WPP: new session methods default-throw `NotImplementedByEngineError` (501)
   in `session.abc.ts` — zero code, clean failure.
 - NOWEB must not call Baileys `communityMetadata()` (broken, WhiskeySockets/Baileys#2753:
