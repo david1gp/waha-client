@@ -12,6 +12,7 @@ const appGetOptionsSchema = a.object({
   id: a.string(),
 })
 
+/** WAHA-local read · GET /api/apps/{id} — WAHA app record; no WhatsApp call. */
 export async function appGet(options: AppGetOptions): PromiseResult<App> {
   const op = "appGet"
   const parsed = a.safeParse(appGetOptionsSchema, options)

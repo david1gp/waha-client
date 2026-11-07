@@ -10,6 +10,7 @@ const serverDebugHeapsnapshotGetOptionsSchema = a.object({
   config: a.custom<WahaClientConfig>((v) => typeof v === "object" && v !== null),
 })
 
+/** WAHA-local read · GET /api/server/debug/heapsnapshot — WAHA heap snapshot; no WhatsApp call. */
 export async function serverDebugHeapsnapshotGet(
   options: ServerDebugHeapsnapshotGetOptions,
 ): PromiseResult<Uint8Array> {

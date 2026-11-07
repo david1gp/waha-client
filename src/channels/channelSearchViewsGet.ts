@@ -13,6 +13,7 @@ const channelSearchViewsGetOptionsSchema = a.object({
   session: a.optional(a.string()),
 })
 
+/** WAHA-local read · GET /api/{session}/channels/search/views — static view list built into WAHA; no WhatsApp call. */
 export async function channelSearchViewsGet(options: ChannelSearchViewsGetOptions): PromiseResult<ChannelView[]> {
   const op = "channelSearchViewsGet"
   const parsed = a.safeParse(channelSearchViewsGetOptionsSchema, options)

@@ -13,6 +13,7 @@ const labelChatsByLabelGetOptionsSchema = a.object({
   labelId: a.pipe(a.string(), a.minLength(1)),
 })
 
+/** Cached read · GET /api/{session}/labels/{labelId}/chats — chats by label from engine store (may be stale). */
 export async function labelChatsByLabelGet(options: LabelChatsByLabelGetOptions): PromiseResult<unknown> {
   const op = "labelChatsByLabelGet"
   const parsed = a.safeParse(labelChatsByLabelGetOptionsSchema, options)

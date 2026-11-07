@@ -13,6 +13,7 @@ const authPasskeyConfirmationGetOptionsSchema = a.object({
   session: a.optional(a.string()),
 })
 
+/** WAHA-local read · GET /api/{session}/auth/passkey/confirmation — pending passkey confirmation code from pairing session state (GOWS only; other engines reject it). */
 export async function authPasskeyConfirmationGet(
   options: AuthPasskeyConfirmationGetOptions,
 ): PromiseResult<PasskeyConfirmationResponse> {

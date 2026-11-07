@@ -17,6 +17,7 @@ const numberStatusCheckOptionsSchema = a.object({
   phone: a.pipe(a.string(), a.minLength(1)),
 })
 
+/** Live fetch · GET /api/checkNumberStatus — live-check if a phone number is on WhatsApp. */
 export async function numberStatusCheck(options: NumberStatusCheckOptions): PromiseResult<WANumberExistResult> {
   const op = "numberStatusCheck"
   const parsed = a.safeParse(numberStatusCheckOptionsSchema, options)

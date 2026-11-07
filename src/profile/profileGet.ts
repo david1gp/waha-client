@@ -13,6 +13,7 @@ const profileGetOptionsSchema = a.object({
   session: a.optional(a.string()),
 })
 
+/** Cached read · GET /api/{session}/profile — own profile from engine store (may be stale). */
 export async function profileGet(options: ProfileGetOptions): PromiseResult<MyProfile> {
   const op = "profileGet"
   const parsed = a.safeParse(profileGetOptionsSchema, options)

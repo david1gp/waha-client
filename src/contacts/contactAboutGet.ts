@@ -14,6 +14,7 @@ const contactAboutGetOptionsSchema = a.object({
   contactId: a.pipe(a.string(), a.minLength(1)),
 })
 
+/** Live fetch · GET /api/contacts/about — live-fetch a contact's about text (WEBJS/WPP only; GOWS/NOWEB do not implement it). */
 export async function contactAboutGet(options: ContactAboutGetOptions): PromiseResult<ContactAbout | null> {
   const op = "contactAboutGet"
   const parsed = a.safeParse(contactAboutGetOptionsSchema, options)

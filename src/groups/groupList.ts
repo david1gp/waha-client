@@ -21,6 +21,7 @@ const groupListOptionsSchema = a.object({
   exclude: a.optional(a.array(a.string())),
 })
 
+/** Cached read · GET /api/{session}/groups — list joined groups from engine store/cache (may be stale; see groupRefresh). */
 export async function groupList(options: GroupListOptions): PromiseResult<GroupInfo[]> {
   const op = "groupList"
   const parsed = a.safeParse(groupListOptionsSchema, options)

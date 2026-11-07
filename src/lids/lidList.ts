@@ -15,6 +15,7 @@ const lidListOptionsSchema = a.object({
   offset: a.optional(a.number()),
 })
 
+/** Cached read · GET /api/{session}/lids — LID mappings from engine store (may be stale). */
 export async function lidList(options: LidListOptions): PromiseResult<LidToPhoneNumber[]> {
   const op = "lidList"
   const parsed = a.safeParse(lidListOptionsSchema, options)

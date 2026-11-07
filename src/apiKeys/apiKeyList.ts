@@ -11,6 +11,7 @@ const apiKeyListOptionsSchema = a.object({
   config: a.custom<WahaClientConfig>((v) => typeof v === "object" && v !== null),
 })
 
+/** WAHA-local read · GET /api/keys — WAHA API key records; no WhatsApp call. */
 export async function apiKeyList(options: ApiKeyListOptions): PromiseResult<ApiKeyDTO[]> {
   const op = "apiKeyList"
   const parsed = a.safeParse(apiKeyListOptionsSchema, options)

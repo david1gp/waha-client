@@ -16,6 +16,7 @@ const channelMessagePreviewGetOptionsSchema = a.object({
   limit: a.optional(a.number()),
 })
 
+/** Live fetch · GET /api/{session}/channels/{id}/messages/preview — live-fetch channel messages preview from WhatsApp. */
 export async function channelMessagePreviewGet(
   options: ChannelMessagePreviewGetOptions,
 ): PromiseResult<ChannelMessage[]> {

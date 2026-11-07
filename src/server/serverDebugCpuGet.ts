@@ -11,6 +11,7 @@ const serverDebugCpuGetOptionsSchema = a.object({
   seconds: a.optional(a.pipe(a.number(), a.minValue(1))),
 })
 
+/** WAHA-local read · GET /api/server/debug/cpu — WAHA CPU debug snapshot; no WhatsApp call. */
 export async function serverDebugCpuGet(options: ServerDebugCpuGetOptions): PromiseResult<Record<string, unknown>> {
   const op = "serverDebugCpuGet"
   const parsed = a.safeParse(serverDebugCpuGetOptionsSchema, options)

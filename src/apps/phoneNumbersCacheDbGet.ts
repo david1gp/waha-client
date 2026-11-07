@@ -16,6 +16,7 @@ const phoneNumbersCacheDbGetOptionsSchema = a.object({
   offset: a.optional(a.number()),
 })
 
+/** WAHA-local read · GET /api/apps/{app}/{session}/cache/db — phone-number cache (db tier); no WhatsApp call. */
 export async function phoneNumbersCacheDbGet(options: PhoneNumbersCacheDbGetOptions): PromiseResult<unknown[]> {
   const op = "phoneNumbersCacheDbGet"
   const parsed = a.safeParse(phoneNumbersCacheDbGetOptionsSchema, options)

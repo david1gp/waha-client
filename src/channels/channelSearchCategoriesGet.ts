@@ -13,6 +13,7 @@ const channelSearchCategoriesGetOptionsSchema = a.object({
   session: a.optional(a.string()),
 })
 
+/** WAHA-local read · GET /api/{session}/channels/search/categories — static category list built into WAHA; no WhatsApp call. */
 export async function channelSearchCategoriesGet(
   options: ChannelSearchCategoriesGetOptions,
 ): PromiseResult<ChannelCategory[]> {

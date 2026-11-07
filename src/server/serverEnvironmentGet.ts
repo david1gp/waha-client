@@ -11,6 +11,7 @@ const serverEnvironmentGetOptionsSchema = a.object({
   all: a.optional(a.boolean()),
 })
 
+/** WAHA-local read · GET /api/server/environment — WAHA environment info; no WhatsApp call. */
 export async function serverEnvironmentGet(
   options: ServerEnvironmentGetOptions,
 ): PromiseResult<Record<string, string>> {

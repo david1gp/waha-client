@@ -10,6 +10,7 @@ const serverHealthOptionsSchema = a.object({
   config: a.custom<WahaClientConfig>((v) => typeof v === "object" && v !== null),
 })
 
+/** WAHA-local read · GET /health — WAHA health status; no WhatsApp call. */
 export async function serverHealth(options: ServerHealthOptions): PromiseResult<HealthCheckResponse> {
   const op = "serverHealth"
   const parsed = a.safeParse(serverHealthOptionsSchema, options)

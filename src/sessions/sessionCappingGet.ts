@@ -13,6 +13,7 @@ const sessionCappingGetOptionsSchema = a.object({
   session: a.optional(a.string()),
 })
 
+/** WAHA-local read · GET /api/{session}/capping — message-capping record; no WhatsApp call. */
 export async function sessionCappingGet(options: SessionCappingGetOptions): PromiseResult<MessageCappingData> {
   const op = "sessionCappingGet"
   const parsed = a.safeParse(sessionCappingGetOptionsSchema, options)

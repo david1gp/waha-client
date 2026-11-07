@@ -14,6 +14,7 @@ const contactListOptionsSchema = a.object({
   contactId: a.pipe(a.string(), a.minLength(1)),
 })
 
+/** Cached read · GET /api/contacts — contacts from engine store (may be stale). */
 export async function contactList(options: ContactListOptions): PromiseResult<Contact> {
   const op = "contactList"
   const parsed = a.safeParse(contactListOptionsSchema, options)

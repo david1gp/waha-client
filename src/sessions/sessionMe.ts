@@ -7,6 +7,7 @@ import type { MeInfo } from "./meInfo.js"
 import { wahaPathApi } from "../client/wahaPathApi.js"
 import { wahaRequest } from "../client/wahaRequest.js"
 
+/** WAHA-local read · GET /api/sessions/{session}/me — authenticated account info from WAHA session state; no WhatsApp call. */
 export async function sessionMe(options: SessionPathOptions): PromiseResult<MeInfo | null> {
   const op = "sessionMe"
   const parsed = a.safeParse(sessionPathOptionsSchema, options)

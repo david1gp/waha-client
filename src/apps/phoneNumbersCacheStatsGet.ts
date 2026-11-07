@@ -14,6 +14,7 @@ const phoneNumbersCacheStatsGetOptionsSchema = a.object({
   app: a.optional(phoneNumbersAppNameSchema),
 })
 
+/** WAHA-local read · GET /api/apps/{app}/{session}/cache/stats — phone-number cache stats; no WhatsApp call. */
 export async function phoneNumbersCacheStatsGet(options: PhoneNumbersCacheStatsGetOptions): PromiseResult<unknown> {
   const op = "phoneNumbersCacheStatsGet"
   const parsed = a.safeParse(phoneNumbersCacheStatsGetOptionsSchema, options)

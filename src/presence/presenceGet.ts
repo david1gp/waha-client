@@ -14,6 +14,7 @@ const presenceGetOptionsSchema = a.object({
   chatId: a.pipe(a.string(), a.minLength(1)),
 })
 
+/** Cached read · GET /api/{session}/presence/{chatId} — presence from engine presence cache (may be stale). */
 export async function presenceGet(options: PresenceGetOptions): PromiseResult<WahaChatPresences> {
   const op = "presenceGet"
   const parsed = a.safeParse(presenceGetOptionsSchema, options)

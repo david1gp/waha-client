@@ -7,6 +7,7 @@ import type { SessionInfo } from "./sessionInfo.js"
 import { wahaPathApi } from "../client/wahaPathApi.js"
 import { wahaRequest } from "../client/wahaRequest.js"
 
+/** WAHA-local read · GET /api/sessions/{session} — session record; no WhatsApp call. */
 export async function sessionGet(options: SessionGetOptions): PromiseResult<SessionInfo> {
   const op = "sessionGet"
   const parsed = a.safeParse(sessionGetOptionsSchema, options)

@@ -11,6 +11,7 @@ const serverStatusGetOptionsSchema = a.object({
   config: a.custom<WahaClientConfig>((v) => typeof v === "object" && v !== null),
 })
 
+/** WAHA-local read · GET /api/server/status — WAHA server status; no WhatsApp call. */
 export async function serverStatusGet(options: ServerStatusGetOptions): PromiseResult<ServerStatusResponse> {
   const op = "serverStatusGet"
   const parsed = a.safeParse(serverStatusGetOptionsSchema, options)

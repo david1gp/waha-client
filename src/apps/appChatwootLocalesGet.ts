@@ -11,6 +11,7 @@ const appChatwootLocalesGetOptionsSchema = a.object({
   config: a.custom<WahaClientConfig>((v) => typeof v === "object" && v !== null),
 })
 
+/** WAHA-local read · GET /api/apps/chatwoot/locales — Chatwoot locale list; no WhatsApp call. */
 export async function appChatwootLocalesGet(options: AppChatwootLocalesGetOptions): PromiseResult<ChatwootLocale[]> {
   const op = "appChatwootLocalesGet"
   const parsed = a.safeParse(appChatwootLocalesGetOptionsSchema, options)

@@ -13,6 +13,7 @@ const channelSearchCountriesGetOptionsSchema = a.object({
   session: a.optional(a.string()),
 })
 
+/** WAHA-local read · GET /api/{session}/channels/search/countries — static country list built into WAHA; no WhatsApp call. */
 export async function channelSearchCountriesGet(
   options: ChannelSearchCountriesGetOptions,
 ): PromiseResult<ChannelCountry[]> {

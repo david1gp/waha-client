@@ -14,6 +14,7 @@ const lidByPhoneGetOptionsSchema = a.object({
   phoneNumber: a.pipe(a.string(), a.minLength(1)),
 })
 
+/** Cached read · GET /api/{session}/lids/pn/{phoneNumber} — LID by phone number from engine store (may be stale). */
 export async function lidByPhoneGet(options: LidByPhoneGetOptions): PromiseResult<LidToPhoneNumber> {
   const op = "lidByPhoneGet"
   const parsed = a.safeParse(lidByPhoneGetOptionsSchema, options)

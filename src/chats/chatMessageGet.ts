@@ -17,6 +17,7 @@ const chatMessageGetOptionsSchema = a.object({
   merge: a.optional(a.boolean()),
 })
 
+/** Cached read · GET /api/{session}/chats/{chatId}/messages/{messageId} — single message from engine store/cache (may be stale). */
 export async function chatMessageGet(options: ChatMessageGetOptions): PromiseResult<WAMessage> {
   const op = "chatMessageGet"
   const parsed = a.safeParse(chatMessageGetOptionsSchema, options)

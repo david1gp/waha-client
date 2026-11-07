@@ -13,6 +13,7 @@ const groupRefreshOptionsSchema = a.object({
   session: a.optional(a.string()),
 })
 
+/** Live fetch · POST /api/{session}/groups/refresh — force a live refetch of group info (cache-busting trigger). */
 export async function groupRefresh(options: GroupRefreshOptions): PromiseResult<GroupRefreshResponse> {
   const op = "groupRefresh"
   const parsed = a.safeParse(groupRefreshOptionsSchema, options)

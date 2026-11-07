@@ -11,6 +11,7 @@ const serverVersionGetOptionsSchema = a.object({
   config: a.custom<WahaClientConfig>((v) => typeof v === "object" && v !== null),
 })
 
+/** WAHA-local read · GET /api/server/version — WAHA server version; no WhatsApp call. */
 export async function serverVersionGet(options: ServerVersionGetOptions): PromiseResult<WahaEnvironment> {
   const op = "serverVersionGet"
   const parsed = a.safeParse(serverVersionGetOptionsSchema, options)

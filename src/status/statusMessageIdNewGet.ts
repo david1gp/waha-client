@@ -15,6 +15,7 @@ const statusMessageIdNewGetOptionsSchema = a.object({
   session: sessionOptionalSchema,
 })
 
+/** WAHA-local read · GET /api/{session}/status/new-message-id — WAHA-generated status id; no WhatsApp call. */
 export async function statusMessageIdNewGet(
   options: StatusMessageIdNewGetOptions,
 ): PromiseResult<NewMessageIDResponse> {

@@ -14,6 +14,7 @@ const groupMemberAddModeGetOptionsSchema = a.object({
   id: a.string(),
 })
 
+/** Cached read · GET /api/{session}/groups/{id}/settings/security/member-add-mode — member-add mode from engine store (may be stale). */
 export async function groupMemberAddModeGet(
   options: GroupMemberAddModeGetOptions,
 ): PromiseResult<SettingsMemberAddMode> {

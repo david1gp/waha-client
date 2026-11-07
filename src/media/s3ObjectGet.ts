@@ -12,6 +12,7 @@ const s3ObjectGetOptionsSchema = a.object({
   pathParts: a.array(a.string()),
 })
 
+/** WAHA-local read · GET /api/s3/{bucket}/{rest} — S3-stored object; no WhatsApp call. */
 export async function s3ObjectGet(options: S3ObjectGetOptions): PromiseResult<Uint8Array> {
   const op = "s3ObjectGet"
   const parsed = a.safeParse(s3ObjectGetOptionsSchema, options)

@@ -13,6 +13,7 @@ const fileGetOptionsSchema = a.object({
   pathParts: a.array(a.string()),
 })
 
+/** WAHA-local read · GET /api/files/{session}/{rest} — WAHA-stored file; no WhatsApp call. */
 export async function fileGet(options: FileGetOptions): PromiseResult<Uint8Array> {
   const op = "fileGet"
   const parsed = a.safeParse(fileGetOptionsSchema, options)

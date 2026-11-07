@@ -14,6 +14,7 @@ const groupInfoAdminOnlyGetOptionsSchema = a.object({
   id: a.string(),
 })
 
+/** Cached read · GET /api/{session}/groups/{id}/settings/security/info-admin-only — group info-edit permission from engine store (may be stale). */
 export async function groupInfoAdminOnlyGet(
   options: GroupInfoAdminOnlyGetOptions,
 ): PromiseResult<SettingsSecurityChangeInfo> {

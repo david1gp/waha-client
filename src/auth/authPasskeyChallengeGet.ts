@@ -13,6 +13,7 @@ const authPasskeyChallengeGetOptionsSchema = a.object({
   session: a.optional(a.string()),
 })
 
+/** Live fetch · GET /api/{session}/auth/passkey/challenge — fresh passkey challenge. */
 export async function authPasskeyChallengeGet(
   options: AuthPasskeyChallengeGetOptions,
 ): PromiseResult<PasskeyChallenge> {

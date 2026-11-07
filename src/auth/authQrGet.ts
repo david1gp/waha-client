@@ -15,8 +15,11 @@ const authQrGetOptionsSchema = a.object({
   format: a.optional(a.picklist(["image", "raw"] as const)),
 })
 
+/** Live fetch · GET /api/{session}/auth/qr — fresh login QR code. */
 export async function authQrGet(options: AuthQrGetOptions & { format: "raw" }): PromiseResult<QrCodeValue>
+/** Live fetch · GET /api/{session}/auth/qr — fresh login QR code. */
 export async function authQrGet(options: AuthQrGetOptions & { format?: "image" }): PromiseResult<Uint8Array>
+/** Live fetch · GET /api/{session}/auth/qr — fresh login QR code. */
 export async function authQrGet(options: AuthQrGetOptions): PromiseResult<Uint8Array | QrCodeValue> {
   const op = "authQrGet"
   const parsed = a.safeParse(authQrGetOptionsSchema, options)

@@ -15,6 +15,7 @@ const chatPictureGetOptionsSchema = a.object({
   refresh: a.optional(a.boolean()),
 })
 
+/** Cached read (24h) · GET /api/{session}/chats/{chatId}/picture — chat picture; refresh=true forces live fetch (rate-limit risk). */
 export async function chatPictureGet(options: ChatPictureGetOptions): PromiseResult<ChatPictureResponse> {
   const op = "chatPictureGet"
   const parsed = a.safeParse(chatPictureGetOptionsSchema, options)

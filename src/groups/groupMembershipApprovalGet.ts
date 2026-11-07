@@ -14,6 +14,7 @@ const groupMembershipApprovalGetOptionsSchema = a.object({
   id: a.string(),
 })
 
+/** Cached read · GET /api/{session}/groups/{id}/settings/security/membership-approval — membership-approval mode from engine store (may be stale). */
 export async function groupMembershipApprovalGet(
   options: GroupMembershipApprovalGetOptions,
 ): PromiseResult<SettingsMembershipApproval> {

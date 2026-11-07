@@ -13,6 +13,7 @@ const groupInviteCodeGetOptionsSchema = a.object({
   id: a.string(),
 })
 
+/** Live fetch · GET /api/{session}/groups/{id}/invite-code — live-fetch the group's current invite code from WhatsApp. */
 export async function groupInviteCodeGet(options: GroupInviteCodeGetOptions): PromiseResult<string> {
   const op = "groupInviteCodeGet"
   const parsed = a.safeParse(groupInviteCodeGetOptionsSchema, options)

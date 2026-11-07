@@ -20,6 +20,7 @@ const chatListOptionsSchema = a.object({
   merge: a.optional(a.boolean()),
 })
 
+/** Cached read · GET /api/{session}/chats — list chats from engine store/cache (may be stale). */
 export async function chatList(options: ChatListOptions): PromiseResult<ChatInfo[]> {
   const op = "chatList"
   const parsed = a.safeParse(chatListOptionsSchema, options)

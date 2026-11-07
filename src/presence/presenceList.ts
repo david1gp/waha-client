@@ -13,6 +13,7 @@ const presenceListOptionsSchema = a.object({
   session: a.optional(a.string()),
 })
 
+/** Cached read · GET /api/{session}/presence — presences from engine presence cache (may be stale). */
 export async function presenceList(options: PresenceListOptions): PromiseResult<WahaChatPresences[]> {
   const op = "presenceList"
   const parsed = a.safeParse(presenceListOptionsSchema, options)

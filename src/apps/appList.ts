@@ -13,6 +13,7 @@ const appListOptionsSchema = a.object({
   session: a.optional(a.string()),
 })
 
+/** WAHA-local read · GET /api/apps — WAHA app records; no WhatsApp call. */
 export async function appList(options: AppListOptions): PromiseResult<App[]> {
   const op = "appList"
   const parsed = a.safeParse(appListOptionsSchema, options)

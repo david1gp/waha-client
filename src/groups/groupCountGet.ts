@@ -13,6 +13,7 @@ const groupCountGetOptionsSchema = a.object({
   session: a.optional(a.string()),
 })
 
+/** Cached read · GET /api/{session}/groups/count — group count from engine store/cache (may be stale). */
 export async function groupCountGet(options: GroupCountGetOptions): PromiseResult<CountResponse> {
   const op = "groupCountGet"
   const parsed = a.safeParse(groupCountGetOptionsSchema, options)

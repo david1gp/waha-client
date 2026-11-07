@@ -14,6 +14,7 @@ const contactExistsCheckOptionsSchema = a.object({
   phone: a.pipe(a.string(), a.minLength(1)),
 })
 
+/** Live fetch · GET /api/contacts/check-exists — live-check if a contact exists on WhatsApp. */
 export async function contactExistsCheck(options: ContactExistsCheckOptions): PromiseResult<WANumberExistResult> {
   const op = "contactExistsCheck"
   const parsed = a.safeParse(contactExistsCheckOptionsSchema, options)

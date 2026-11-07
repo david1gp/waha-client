@@ -17,6 +17,7 @@ const channelSearchByViewOptionsSchema = a.object({
   startCursor: a.optional(a.string()),
 })
 
+/** Live fetch · POST /api/{session}/channels/search/by-view — live-search the WhatsApp channel directory by view. */
 export async function channelSearchByView(options: ChannelSearchByViewOptions): PromiseResult<ChannelListResult> {
   const op = "channelSearchByView"
   const parsed = a.safeParse(channelSearchByViewOptionsSchema, options)

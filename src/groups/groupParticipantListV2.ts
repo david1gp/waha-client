@@ -14,6 +14,7 @@ const groupParticipantListV2OptionsSchema = a.object({
   id: a.string(),
 })
 
+/** Cached read · GET /api/{session}/groups/{id}/participants/v2 — group participants (v2) from engine store (may be stale; see groupRefresh). */
 export async function groupParticipantListV2(
   options: GroupParticipantListV2Options,
 ): PromiseResult<GroupParticipant[]> {

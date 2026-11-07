@@ -14,6 +14,7 @@ const lidGetOptionsSchema = a.object({
   lid: a.pipe(a.string(), a.minLength(1)),
 })
 
+/** Cached read · GET /api/{session}/lids/{lid} — LID mapping from engine store (may be stale). */
 export async function lidGet(options: LidGetOptions): PromiseResult<LidToPhoneNumber> {
   const op = "lidGet"
   const parsed = a.safeParse(lidGetOptionsSchema, options)

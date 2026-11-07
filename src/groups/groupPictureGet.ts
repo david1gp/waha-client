@@ -15,6 +15,7 @@ const groupPictureGetOptionsSchema = a.object({
   refresh: a.optional(a.boolean()),
 })
 
+/** Cached read (24h) · GET /api/{session}/groups/{id}/picture — group picture; refresh=true forces live fetch (rate-limit risk). */
 export async function groupPictureGet(options: GroupPictureGetOptions): PromiseResult<ChatPictureResponse> {
   const op = "groupPictureGet"
   const parsed = a.safeParse(groupPictureGetOptionsSchema, options)

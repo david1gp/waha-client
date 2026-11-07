@@ -14,6 +14,7 @@ const groupMemberShareHistoryModeGetOptionsSchema = a.object({
   id: a.string(),
 })
 
+/** Cached read · GET /api/{session}/groups/{id}/settings/security/member-share-history-mode — share-history mode from engine store (may be stale). */
 export async function groupMemberShareHistoryModeGet(
   options: GroupMemberShareHistoryModeGetOptions,
 ): PromiseResult<SettingsMemberShareHistoryMode> {

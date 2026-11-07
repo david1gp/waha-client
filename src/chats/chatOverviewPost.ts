@@ -24,6 +24,7 @@ const chatOverviewPostOptionsSchema = a.object({
   ),
 })
 
+/** Cached read · POST /api/{session}/chats/overview — filtered chat overviews from engine store/cache (may be stale). */
 export async function chatOverviewPost(options: ChatOverviewPostOptions): PromiseResult<ChatSummary[]> {
   const op = "chatOverviewPost"
   const parsed = a.safeParse(chatOverviewPostOptionsSchema, options)

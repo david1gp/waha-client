@@ -15,6 +15,7 @@ const messageIdNewGetOptionsSchema = a.object({
   session: sessionOptionalSchema,
 })
 
+/** WAHA-local read · GET /api/{session}/new-message-id — WAHA-generated message id; no WhatsApp call. */
 export async function messageIdNewGet(options: MessageIdNewGetOptions): PromiseResult<NewMessageIDResponse> {
   const op = "messageIdNewGet"
   const parsed = a.safeParse(messageIdNewGetOptionsSchema, options)

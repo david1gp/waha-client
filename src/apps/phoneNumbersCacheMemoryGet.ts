@@ -16,6 +16,7 @@ const phoneNumbersCacheMemoryGetOptionsSchema = a.object({
   offset: a.optional(a.number()),
 })
 
+/** WAHA-local read · GET /api/apps/{app}/{session}/cache/memory — phone-number cache (memory tier); no WhatsApp call. */
 export async function phoneNumbersCacheMemoryGet(options: PhoneNumbersCacheMemoryGetOptions): PromiseResult<unknown[]> {
   const op = "phoneNumbersCacheMemoryGet"
   const parsed = a.safeParse(phoneNumbersCacheMemoryGetOptionsSchema, options)

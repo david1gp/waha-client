@@ -12,6 +12,7 @@ const screenshotGetOptionsSchema = a.object({
   session: a.optional(a.string()),
 })
 
+/** WAHA-local read · GET /api/screenshot — session browser screenshot; no WhatsApp call. */
 export async function screenshotGet(options: ScreenshotGetOptions): PromiseResult<Uint8Array> {
   const op = "screenshotGet"
   const parsed = a.safeParse(screenshotGetOptionsSchema, options)

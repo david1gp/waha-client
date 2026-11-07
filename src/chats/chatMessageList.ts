@@ -27,6 +27,7 @@ const chatMessageListOptionsSchema = a.object({
   filterAck: a.optional(a.picklist(["ERROR", "PENDING", "SERVER", "DEVICE", "READ", "PLAYED"] as const)),
 })
 
+/** Cached read · GET /api/{session}/chats/{chatId}/messages — chat messages from engine store/cache (may be stale). */
 export async function chatMessageList(options: ChatMessageListOptions): PromiseResult<WAMessage[]> {
   const op = "chatMessageList"
   const parsed = a.safeParse(chatMessageListOptionsSchema, options)

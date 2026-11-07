@@ -15,6 +15,7 @@ const groupJoinInfoGetOptionsSchema = a.object({
   code: a.string(),
 })
 
+/** Live fetch · GET /api/{session}/groups/join-info — live-fetch group invite info by code. */
 export async function groupJoinInfoGet(options: GroupJoinInfoGetOptions): PromiseResult<GroupInfo> {
   const op = "groupJoinInfoGet"
   const parsed = a.safeParse(groupJoinInfoGetOptionsSchema, options)

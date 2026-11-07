@@ -13,6 +13,7 @@ const sessionTimelockGetOptionsSchema = a.object({
   session: a.optional(a.string()),
 })
 
+/** WAHA-local read · GET /api/{session}/timelock — reachout-timelock record; no WhatsApp call. */
 export async function sessionTimelockGet(options: SessionTimelockGetOptions): PromiseResult<ReachoutTimelockData> {
   const op = "sessionTimelockGet"
   const parsed = a.safeParse(sessionTimelockGetOptionsSchema, options)

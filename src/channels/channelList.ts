@@ -14,6 +14,7 @@ const channelListOptionsSchema = a.object({
   role: a.optional(channelRoleFilterSchema),
 })
 
+/** Cached read · GET /api/{session}/channels — list channels from engine store (may be stale). */
 export async function channelList(options: ChannelListOptions): PromiseResult<Channel[]> {
   const op = "channelList"
   const parsed = a.safeParse(channelListOptionsSchema, options)

@@ -14,6 +14,7 @@ const groupParticipantJoinRequestListOptionsSchema = a.object({
   id: a.string(),
 })
 
+/** Live fetch · GET /api/{session}/groups/{id}/participants/join-requests — live-fetch pending group join requests from WhatsApp. */
 export async function groupParticipantJoinRequestList(
   options: GroupParticipantJoinRequestListOptions,
 ): PromiseResult<GroupJoinRequestResponse[]> {

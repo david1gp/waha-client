@@ -14,6 +14,7 @@ const serverDebugBrowserTraceGetOptionsSchema = a.object({
   categories: a.optional(a.array(a.string())),
 })
 
+/** WAHA-local read · GET /api/server/debug/browser/trace/{session} — WAHA browser trace; no WhatsApp call. */
 export async function serverDebugBrowserTraceGet(
   options: ServerDebugBrowserTraceGetOptions,
 ): PromiseResult<Uint8Array> {

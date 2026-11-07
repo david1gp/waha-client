@@ -15,6 +15,7 @@ const groupParticipantTagGetOptionsSchema = a.object({
   participantId: a.string(),
 })
 
+/** Cached read · GET /api/{session}/groups/{id}/participants/v2/tags/{participantId} — participant tag from engine store (may be stale). */
 export async function groupParticipantTagGet(
   options: GroupParticipantTagGetOptions,
 ): PromiseResult<GroupParticipantTag> {

@@ -16,6 +16,7 @@ const channelSearchByTextOptionsSchema = a.object({
   startCursor: a.optional(a.string()),
 })
 
+/** Live fetch · POST /api/{session}/channels/search/by-text — live-search the WhatsApp channel directory by text. */
 export async function channelSearchByText(options: ChannelSearchByTextOptions): PromiseResult<ChannelListResult> {
   const op = "channelSearchByText"
   const parsed = a.safeParse(channelSearchByTextOptionsSchema, options)
