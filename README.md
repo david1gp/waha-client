@@ -53,6 +53,10 @@ const sent = await messageTextSend({
 if (!sent.success) throw new Error(sent.errorMessage)
 ```
 
+### Reads: live vs cached
+
+waha-client caches nothing: every op is one HTTP call to WAHA. Writes (`messageTextSend`, `groupCreate`, …) are always live actions on the paired WhatsApp account. Reads are answered by WAHA's engine (GOWS/NOWEB/WEBJS), which serves many of them from its own store/cache, so results can be stale (e.g. GOWS group info is cached for 24h; use `groupRefresh` to force a refetch). Pictures are cached for 24h unless `refresh=true` forces a live fetch (use sparingly — WhatsApp rate-limits this). Each read op carries a 1-line JSDoc tag: `Cached read`, `Live fetch`, or `WAHA-local read` (no WhatsApp call).
+
 ### Group responses
 
 HTTP group info methods (`groupList`, `groupGet`, `groupCreate`, and `groupJoinInfoGet`) return `GroupInfo` with `jid` and
