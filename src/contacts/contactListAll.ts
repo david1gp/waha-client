@@ -19,7 +19,7 @@ const contactListAllOptionsSchema = a.object({
   sortOrder: a.optional(a.picklist(["asc", "desc"] as const)),
 })
 
-/** Cached read · GET /api/contacts/all — all contacts from engine store (may be stale). */
+/** Cached read · GET /api/contacts/all — all contacts from engine store synced from your WhatsApp account (may be stale). */
 export async function contactListAll(options: ContactListAllOptions): PromiseResult<Contact[]> {
   const op = "contactListAll"
   const parsed = a.safeParse(contactListAllOptionsSchema, options)

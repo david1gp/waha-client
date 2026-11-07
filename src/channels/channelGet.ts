@@ -14,7 +14,7 @@ const channelGetOptionsSchema = a.object({
   id: a.pipe(a.string(), a.minLength(1)),
 })
 
-/** Cached read · GET /api/{session}/channels/{id} — channel info from engine store (may be stale). */
+/** Live fetch · GET /api/{session}/channels/{id} — live WA-server query for channel info. */
 export async function channelGet(options: ChannelGetOptions): PromiseResult<Channel> {
   const op = "channelGet"
   const parsed = a.safeParse(channelGetOptionsSchema, options)

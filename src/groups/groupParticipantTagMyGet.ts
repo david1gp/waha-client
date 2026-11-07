@@ -14,7 +14,7 @@ const groupParticipantTagMyGetOptionsSchema = a.object({
   id: a.string(),
 })
 
-/** Cached read · GET /api/{session}/groups/{id}/participants/v2/tags/my — own participant tag from engine store (may be stale). */
+/** Cached read · GET /api/{session}/groups/{id}/participants/v2/tags/my — own participant tag from engine store synced from your WhatsApp account (may be stale). */
 export async function groupParticipantTagMyGet(
   options: GroupParticipantTagMyGetOptions,
 ): PromiseResult<GroupParticipantTag> {

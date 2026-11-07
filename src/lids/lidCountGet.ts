@@ -13,7 +13,7 @@ const lidCountGetOptionsSchema = a.object({
   session: a.optional(a.string()),
 })
 
-/** Cached read · GET /api/{session}/lids/count — LID count from engine store (may be stale). */
+/** Cached read · GET /api/{session}/lids/count — LID count from engine store synced from your WhatsApp account (may be stale). */
 export async function lidCountGet(options: LidCountGetOptions): PromiseResult<CountResponse> {
   const op = "lidCountGet"
   const parsed = a.safeParse(lidCountGetOptionsSchema, options)

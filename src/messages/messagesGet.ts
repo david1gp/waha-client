@@ -28,7 +28,7 @@ const messagesGetOptionsSchema = a.object({
   "filter.ack": a.optional(a.string()),
 })
 
-/** Cached read · GET /api/messages — messages from engine store (may be stale). */
+/** Cached read · GET /api/messages — messages from engine store synced from your WhatsApp account (may be stale). */
 export async function messagesGet(options: MessagesGetOptions): PromiseResult<WAMessage[]> {
   const op = "messagesGet"
   const parsed = a.safeParse(messagesGetOptionsSchema, options)

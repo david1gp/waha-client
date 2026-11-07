@@ -14,7 +14,7 @@ const groupInfoAdminOnlyGetOptionsSchema = a.object({
   id: a.string(),
 })
 
-/** Cached read · GET /api/{session}/groups/{id}/settings/security/info-admin-only — group info-edit permission from engine store (may be stale). */
+/** Cached read · GET /api/{session}/groups/{id}/settings/security/info-admin-only — group info-edit permission from cached group info (group-info cache: 24h on GOWS + NOWEB store). */
 export async function groupInfoAdminOnlyGet(
   options: GroupInfoAdminOnlyGetOptions,
 ): PromiseResult<SettingsSecurityChangeInfo> {

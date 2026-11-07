@@ -14,7 +14,7 @@ const groupMessagesAdminOnlyGetOptionsSchema = a.object({
   id: a.string(),
 })
 
-/** Cached read · GET /api/{session}/groups/{id}/settings/security/messages-admin-only — group send permission from engine store (may be stale). */
+/** Cached read · GET /api/{session}/groups/{id}/settings/security/messages-admin-only — group send permission from cached group info (group-info cache: 24h on GOWS + NOWEB store). */
 export async function groupMessagesAdminOnlyGet(
   options: GroupMessagesAdminOnlyGetOptions,
 ): PromiseResult<SettingsSecurityChangeInfo> {

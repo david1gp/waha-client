@@ -17,7 +17,7 @@ const chatOverviewGetOptionsSchema = a.object({
   ids: a.optional(a.array(a.string())),
 })
 
-/** Cached read · GET /api/{session}/chats/overview — chat overviews from engine store/cache (may be stale). */
+/** Cached read · GET /api/{session}/chats/overview — chat overviews from engine store synced from your WhatsApp account (may be stale). */
 export async function chatOverviewGet(options: ChatOverviewGetOptions): PromiseResult<ChatSummary[]> {
   const op = "chatOverviewGet"
   const parsed = a.safeParse(chatOverviewGetOptionsSchema, options)

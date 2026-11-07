@@ -14,7 +14,7 @@ const labelChatListOptionsSchema = a.object({
   chatId: a.pipe(a.string(), a.minLength(1)),
 })
 
-/** Cached read · GET /api/{session}/labels/chats/{chatId} — chat labels from engine store (may be stale). */
+/** Cached read · GET /api/{session}/labels/chats/{chatId} — chat labels from engine store synced from your WhatsApp account (may be stale). */
 export async function labelChatList(options: LabelChatListOptions): PromiseResult<Label[]> {
   const op = "labelChatList"
   const parsed = a.safeParse(labelChatListOptionsSchema, options)

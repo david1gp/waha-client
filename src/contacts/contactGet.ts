@@ -14,7 +14,7 @@ const contactGetOptionsSchema = a.object({
   id: a.pipe(a.string(), a.minLength(1)),
 })
 
-/** Cached read · GET /api/{session}/contacts/{id} — contact from engine store (may be stale). */
+/** Cached read · GET /api/{session}/contacts/{id} — contact from engine store synced from your WhatsApp account (may be stale). */
 export async function contactGet(options: ContactGetOptions): PromiseResult<Contact> {
   const op = "contactGet"
   const parsed = a.safeParse(contactGetOptionsSchema, options)

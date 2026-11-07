@@ -14,7 +14,7 @@ const groupParticipantListOptionsSchema = a.object({
   id: a.string(),
 })
 
-/** Cached read · GET /api/{session}/groups/{id}/participants/ — group participants from engine store (may be stale; see groupRefresh). */
+/** Cached read · GET /api/{session}/groups/{id}/participants/ — group participants from cached group info (group-info cache: 24h on GOWS + NOWEB store; see groupRefresh). */
 export async function groupParticipantList(options: GroupParticipantListOptions): PromiseResult<GroupParticipant[]> {
   const op = "groupParticipantList"
   const parsed = a.safeParse(groupParticipantListOptionsSchema, options)

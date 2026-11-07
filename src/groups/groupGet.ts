@@ -15,7 +15,7 @@ const groupGetOptionsSchema = a.object({
   id: a.string(),
 })
 
-/** Cached read · GET /api/{session}/groups/{id} — group info from engine store/cache (may be stale; see groupRefresh). */
+/** Cached read · GET /api/{session}/groups/{id} — group info from engine store (group-info cache: 24h on GOWS + NOWEB store; see groupRefresh). */
 export async function groupGet(options: GroupGetOptions): PromiseResult<GroupInfo> {
   const op = "groupGet"
   const parsed = a.safeParse(groupGetOptionsSchema, options)

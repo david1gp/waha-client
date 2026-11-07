@@ -14,7 +14,7 @@ const groupParticipantListV2OptionsSchema = a.object({
   id: a.string(),
 })
 
-/** Cached read · GET /api/{session}/groups/{id}/participants/v2 — group participants (v2) from engine store (may be stale; see groupRefresh). */
+/** Cached read · GET /api/{session}/groups/{id}/participants/v2 — group participants (v2) from cached group info (group-info cache: 24h on GOWS + NOWEB store; see groupRefresh). */
 export async function groupParticipantListV2(
   options: GroupParticipantListV2Options,
 ): PromiseResult<GroupParticipant[]> {

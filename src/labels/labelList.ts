@@ -13,7 +13,7 @@ const labelListOptionsSchema = a.object({
   session: a.optional(a.string()),
 })
 
-/** Cached read · GET /api/{session}/labels — labels from engine store (may be stale). */
+/** Cached read · GET /api/{session}/labels — labels from engine store synced from your WhatsApp account (may be stale). */
 export async function labelList(options: LabelListOptions): PromiseResult<Label[]> {
   const op = "labelList"
   const parsed = a.safeParse(labelListOptionsSchema, options)

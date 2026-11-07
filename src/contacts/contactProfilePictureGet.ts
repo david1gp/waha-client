@@ -15,7 +15,7 @@ const contactProfilePictureGetOptionsSchema = a.object({
   refresh: a.optional(a.boolean()),
 })
 
-/** Cached read (24h) · GET /api/contacts/profile-picture — contact picture; refresh=true forces live fetch (rate-limit risk). */
+/** Cached read (WAHA picture cache: 24h) · GET /api/contacts/profile-picture — contact picture; refresh=true forces live fetch (rate-limit risk). */
 export async function contactProfilePictureGet(
   options: ContactProfilePictureGetOptions,
 ): PromiseResult<ContactProfilePicture> {
