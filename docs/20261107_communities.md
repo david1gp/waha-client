@@ -16,17 +16,33 @@ the feature is out of scope (listed under Excluded), even if Baileys could do it
 
 ## Status
 
-Tasks 1–7 plus the raw-IQ fix are deployed (gows-plus `master`=`13ba9e3`,
-release `v1.0.49.2`; waha `core`=`d7711669`; waha-client `main`=`5cad98b` + this
-doc `c940e10`; plan-status edits after `c940e10` stay uncommitted until the
-final wrap-up commit). Task 8 confirms community creation, subgroup reads,
-linked-participant reads, link, unlink, and subgroup creation live. Membership
-routing is deployed in gows-plus `v1.0.49.3` (`6404401`) and WAHA `d1c1aca2`:
-ordinary members are added to the announcement/default subgroup, never the
-community parent. `TEST9` proves create-time seeding and that parent-addressed
-adds resolve to the default subgroup. Next: Task 9 upstream-update timer in
-`~/ds` and final wrap-up.
-Runtime is x86_64, so the missing `gows-arm64` asset does not block deployment.
+Tasks 1–8 are done and deployed: gows-plus `master`=`6404401` (upstream
+`50b091b` + 5 commits, release `v1.0.49.3` with `gows-amd64` + `gows.proto`,
+no arm64 — prod is x86_64); waha `core`=`d1c1aca2` (upstream `2026.10.1`
+`c42f68a` + 6 commits, prod image
+`localhost/waha-fork:2026.10.1-communities-d1c1aca2`, version endpoint
+`2026.10.1/GOWS/CORE`, Leo + Leo3 `WORKING`); waha-client **`v0.8.0`
+released with the community ops** (they were missing from `v0.7.0`).
+Membership routing is live: ordinary members are added to the
+announcement/default subgroup, never the community parent.
+
+`TEST9` write paths (create-with-participants seeding, parent-addressed add
+routing) are **intentionally not live-run**: on 2026-11-08 the user chose
+read-only verification, so these paths stay code-reviewed + unit-tested and
+are recorded as live-unproven. A future supervised run can use the TEST9
+write checklist in `contentoren-server` `waha/README.md`.
+
+Read-only live proof (2026-11-08, session Leo): 2861 groups, 335 of them
+communities (`isParent=true`); subgroup reads return the expected sets with
+exactly one default subgroup each; `linked-participants` answers live but
+WhatsApp returns 403 for a subset of communities (server-side limitation,
+not a client bug). HTTP 200s (not 404/501) confirm the new routes are live
+on GOWS.
+
+Both update timers are enabled: `~/ds` `waha_fork_update` (weekly Wed 11:00
+`Europe/Berlin`, `fork-upstream-update.sh --auto`) and cs
+`waha_update.timer` (weekly Wed 09:00 `Europe/Berlin`, backup + health only
+— moved off 11:00 so the backup window completes before the update window).
 
 ## Decisions
 
