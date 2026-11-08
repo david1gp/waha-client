@@ -2,8 +2,11 @@ name: CI
 
 on:
   push:
-    branches: [main]
-  pull_request:
+    tags:
+      - 'v*'
+  release:
+    types: [published]
+  workflow_dispatch:
 
 permissions:
   contents: read
