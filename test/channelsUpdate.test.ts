@@ -162,7 +162,7 @@ describe("channels update CLI", () => {
         picture: { mimetype: string; filename: string; data: string }
       }
       expect(body.picture.mimetype).toBe("image/jpeg")
-      expect(body.picture.filename).toBe(tmpFile.split("/").at(-1))
+      expect(body.picture.filename).toBe(tmpFile.split("/").at(-1) ?? "")
       expect(typeof body.picture.data).toBe("string")
       expect(Buffer.from(body.picture.data, "base64").length).toBe(5)
     } finally {
