@@ -7,12 +7,15 @@ import { cliJsonFlagParam } from "../../cli/cliJsonFlagParam.js"
 import { cliJsonParse } from "../../cli/cliJsonParse.js"
 import { cliRunApi } from "../../cli/cliRunApi.js"
 import { cliScalarFlagParams } from "../../cli/cliScalarFlagParams.js"
+import { createResultError } from "#result"
 import type { WahaFile } from "../../media/wahaFile.js"
 import { channelCreate } from "../channelCreate.js"
 import { channelDelete } from "../channelDelete.js"
 import { channelFollow } from "../channelFollow.js"
 import { channelGet } from "../channelGet.js"
 import { channelList } from "../channelList.js"
+import { channelUpdate } from "../channelUpdate.js"
+import { channelPictureFileResolve } from "./channelPictureFileResolve.js"
 import { channelMessagePreviewGet } from "../channelMessagePreviewGet.js"
 import { channelMute } from "../channelMute.js"
 import { type ChannelRoleFilter, channelRoleFilterSchema } from "../channelRoleFilter.js"
@@ -86,6 +89,66 @@ const createCommand = buildCommand({
     },
   },
   docs: { brief: "Create a channel" },
+})
+
+const updateCommand = buildCommand({
+  async func(
+    this: CommandContext,
+    flags: CliConfigFlags & {
+      id: string
+      name?: string
+      description?: string
+      picture?: string
+      pictureJson?: string
+      removePicture?: boolean
+    },
+  ) {
+    const pictureJson = cliJsonParse(flags.pictureJson, "channelUpdate", "pictureJson")
+    if (!pictureJson.success) cliFail(pictureJson)
+
+    let picture = pictureJson.data as WahaFile | null | undefined
+    if (flags.picture !== undefined) {
+      if (picture !== undefined)
+        cliFail(createResultError("channelUpdate", "Use only one of --picture or --pictureJson"))
+      const file = await channelPictureFileResolve(flags.picture)
+      if (!file.success) cliFail(file)
+      picture = file.data
+    }
+    if (flags.removePicture === true) {
+      if (picture !== undefined) {
+        cliFail(createResultError("channelUpdate", "--remove-picture conflicts with --picture/--pictureJson"))
+      }
+      picture = null
+    }
+
+    await cliRunApi(this, flags, (config) =>
+      channelUpdate({
+        config,
+        session: flags.session,
+        id: flags.id,
+        name: flags.name,
+        description: flags.description,
+        picture,
+      }),
+    )
+  },
+  parameters: {
+    flags: {
+      ...cliConfigFlagParams,
+      id: cliScalarFlagParams.requiredString("Channel id"),
+      name: cliScalarFlagParams.optionalString("Channel name"),
+      description: cliScalarFlagParams.optionalString("Channel description (empty string clears)"),
+      picture: cliScalarFlagParams.optionalString("Channel picture file path or URL"),
+      pictureJson: cliJsonFlagParam("Channel picture as a WahaFile JSON object (null removes)", true) as {
+        kind: "parsed"
+        parse: typeof String
+        optional: true
+        brief: string
+      },
+      removePicture: cliScalarFlagParams.optionalBoolean("Remove the channel picture"),
+    },
+  },
+  docs: { brief: "Update a channel" },
 })
 
 const getCommand = buildCommand({
@@ -319,6 +382,7 @@ export const channelCommands = buildRouteMap({
     create: createCommand,
     get: getCommand,
     delete: deleteCommand,
+    update: updateCommand,
     "message-preview": messagePreviewCommand,
     follow: followCommand,
     unfollow: unfollowCommand,

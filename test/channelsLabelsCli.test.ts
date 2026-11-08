@@ -43,6 +43,7 @@ describe("channel and label CLI routes", () => {
       "create",
       "get",
       "delete",
+      "update",
       "message-preview",
       "follow",
       "unfollow",
